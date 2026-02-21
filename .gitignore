@@ -1,0 +1,36 @@
+# Node / Bun
+node_modules/
+bun.lockb
+pnpm-lock.yaml
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Env / secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Enkidu / local state
+.ekdu/
+.ekdu.db
+context-graph.db
+telemetry.db
+
+# OpenCode cache / artifacts (project local)
+.opencode/cache/
+.opencode/tmp/

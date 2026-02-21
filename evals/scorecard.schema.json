@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Enkidu PR Scorecard",
+  "type": "object",
+  "required": [
+    "meta",
+    "gates"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": [
+        "timestamp",
+        "commit",
+        "branch",
+        "gateSet"
+      ],
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "branch": {
+          "type": "string"
+        },
+        "gateSet": {
+          "type": "string"
+        },
+        "prNumber": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "toolchain": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "gates": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fail"
+          ]
+        },
+        "lint": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "skip"
+              ]
+            },
+            "newErrors": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": true
+        },
+        "typecheck": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "skip"
+              ]
+            },
+            "errors": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": true
+        },
+        "tests": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "skip"
+              ]
+            },
+            "passed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "failed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "flaky": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": true
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "skip"
+              ]
+            },
+            "delta": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": true
+        },
+        "security": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "skip"
+              ]
+            },
+            "high": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "medium": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "low": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": true
+        },
+        "performance": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "skip"
+              ]
+            },
+            "budgets": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": true
+        },
+        "observability": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "fail",
+                "skip"
+              ]
+            },
+            "notes": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

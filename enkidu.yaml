@@ -1,0 +1,69 @@
+# Enkidu configuration
+# This file is for Enkidu-the-orchestrator (separate from opencode.json).
+# It is intentionally tool-agnostic so you can drive it from OpenCode, Codex, CI, or a custom runner.
+
+project:
+  name: Enkidu
+  repo: .
+
+plugins:
+  psychmem:
+    enabled: true
+    scope: project   # project | user
+    db_path: .ekdu/psychmem.db
+
+  context_graph:
+    enabled: true
+    db_path: .ekdu/context-graph.db
+
+  arifos:
+    enabled: false
+    mode: rest      # rest | mcp_http | mcp_sse | stdio
+    endpoint: http://localhost:8000
+    policy_profile: strict # strict | balanced | permissive
+
+  superbmad:
+    enabled: false
+    # If you build a combined skill pack (Superpowers + BMAD), configure it here.
+    skills_path: .opencode/skills/superbmad
+
+workflow:
+  default_branch: main
+  branch_prefix: ekdu/
+  worktrees_dir: .ekdu/worktrees
+
+autonomy:
+  # "Autonomy ladder": higher levels require stronger gates.
+  level: 2   # 0..5 (see docs/AUTONOMY_LADDER.md)
+
+quality_ratchet:
+  enabled: true
+  scorecard:
+    schema: evals/scorecard.schema.json
+    path: evals/scorecards
+  thresholds:
+    # Example: prevent quality regression.
+    max_new_lint_errors: 0
+    min_unit_test_coverage_delta: 0.0
+    max_type_errors: 0
+    max_security_findings_high: 0
+    max_security_findings_medium: 0
+
+gates:
+  sets:
+    quick:
+      - lint
+      - typecheck
+      - unit_tests
+    pr:
+      - lint
+      - typecheck
+      - unit_tests
+      - integration_tests
+      - security_scan
+      - dependency_audit
+    release:
+      - pr
+      - e2e
+      - performance_budget
+      - observability_smoke
