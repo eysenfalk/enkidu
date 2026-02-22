@@ -23,6 +23,7 @@ What problem are we solving? Who is impacted?
 - Security / privacy constraints:
 - Scraping constraints:
 - Performance budgets:
+- Execution worktree constraint: implementation/testing only from `.ekdu/worktrees/<slice-slug>` on branch `ekdu/<packet-id>-<slice-slug>`.
 
 ## Context bundle
 
@@ -40,3 +41,5 @@ Rough approach, open questions, dependencies.
 ## Validation recipe
 
 Commands to run and what success looks like.
+
+- Include gate evidence records in `plan.md` with timestamps and worktree path.

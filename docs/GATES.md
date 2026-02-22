@@ -16,18 +16,29 @@ Enkidu uses gates to:
 
 You can define sets in `enkidu.yaml` (recommended). Default sets:
 
+Concrete local commands (workflow-of-record baseline):
+
+- `npm run lint`
+- `npm run typecheck`
+- `npm run test`
+- `npm run test:integration`
+- `npm run security:scan`
+- `npm run audit:deps`
+- `npm run gates:quick` (wrapper for quick set)
+- `npm run gates:pr` (wrapper for PR set)
+
 ### quick
 Fast feedback while iterating:
-- lint
-- typecheck
-- unit tests
+- `npm run lint`
+- `npm run typecheck`
+- `npm run test`
 
 ### pr
 Everything required for a PR to merge:
 - quick
-- integration tests
-- security scan
-- dependency audit
+- `npm run test:integration`
+- `npm run security:scan`
+- `npm run audit:deps`
 
 ### release
 For deploys:
@@ -35,6 +46,9 @@ For deploys:
 - e2e
 - performance budget
 - observability smoke test
+
+Release execution runs `scripts/run-gates.sh release`, which currently executes PR gates plus `ENKIDU_RELEASE_CMD`.
+Configure `ENKIDU_RELEASE_CMD` (or update `scripts/run-gates.sh`) before using release as a merge blocker.
 
 ---
 

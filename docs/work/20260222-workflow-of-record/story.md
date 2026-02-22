@@ -1,8 +1,8 @@
 # Story: Workflow-of-record + agent discipline
 
-**Owner:** aemon  
-**Status:** in-progress  
-**Target gate set:** pr  
+**Owner:** aemon
+**Status:** done
+**Target gate set:** pr
 **Risk class:** B
 
 ## Problem
@@ -47,9 +47,26 @@ We also need enforced role separation: orchestrator delegates only; planner edit
 
 ## Implementation notes
 
-This is a docs/config change. Keep it PR-sized and focused on workflow + permissions + commands.
+Completed as docs/config + gate-script implementation with unit and integration tests.
 
 ## Validation recipe
 
-- Confirm queue pointers are discoverable by listing `docs/work/_queue/*/`.
-- Confirm orchestrator/planner permissions using `opencode debug config`.
+- `npm run lint`
+- `npm run typecheck`
+- `npm run test`
+- `npm run test:integration`
+- `npm run security:scan`
+- `npm run audit:deps`
+- `npm run gates:pr`
+- `git diff --check`
+
+## Completion snapshot
+
+- [x] Work packet model exists in `docs/work/` with queue pointer directories.
+- [x] `docs/WORKFLOW.md` documents workflow-of-record controls, validation checklist, and worktree policy.
+- [x] Orchestrator/implementer/tester prompts include dedicated execution worktree + packet-scoped naming rules.
+- [x] Gate scripts are executable and mapped to concrete commands in `package.json` and `docs/GATES.md`.
+- [x] Packet moved from `in-progress` pointer to `done` pointer.
+
+Legacy transition note:
+- Existing pre-policy worktrees may finish under legacy naming, but all new slices must use `ekdu/<packet-id>-<slice-slug>` and `.ekdu/worktrees/<slice-slug>`.

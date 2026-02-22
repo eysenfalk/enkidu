@@ -7,8 +7,14 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/cli.ts",
-    "lint": "echo \"TODO: configure lint\" && exit 0",
-    "test": "echo \"TODO: configure tests\" && exit 0"
+    "lint": "node scripts/lint-repo.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test tests/unit/*.test.mjs",
+    "test:integration": "node --test tests/integration/*.test.mjs",
+    "security:scan": "node scripts/security-scan.mjs",
+    "audit:deps": "node scripts/audit-deps.mjs",
+    "gates:quick": "bash scripts/run-gates.sh quick",
+    "gates:pr": "bash scripts/run-gates.sh pr"
   },
   "dependencies": {
     "commander": "^12.0.0",

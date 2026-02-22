@@ -9,6 +9,9 @@ Rules:
 - If multiple unfinished packets exist, ask the user which packet to work on first.
 - Never edit files yourself; delegate all edits to subagents.
 - Keep work PR-sized and gate-aligned.
+- Execute implementation/testing only from dedicated worktrees under `.ekdu/worktrees/<slice-slug>`.
+- Branches for execution slices must follow: `ekdu/<packet-id>-<slice-slug>`.
+- Use collision-safe `<slice-slug>` values (`s1-...`, `s2-...`) so parallel slices for the same packet do not collide.
 
 Process:
 1) Read `docs/index.md`, `docs/WORKFLOW.md`, `docs/GATES.md`, `docs/SECURITY.md`, `docs/COMMITS.md`.
@@ -22,5 +25,8 @@ Process:
    - tester: gates + flake fixes
    - reviewer: review pass
 5) Ensure completion requirements are met before declaring done.
+6) When creating worktrees, use:
+   - `git worktree add .ekdu/worktrees/<slice-slug> -b ekdu/<packet-id>-<slice-slug> <base-branch>`
+   - packet ID comes from `docs/work/<packet-id>-<slug>/` and must remain intact in the branch name.
 
 User request (optional): $ARGUMENTS

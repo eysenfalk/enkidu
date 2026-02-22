@@ -12,6 +12,9 @@ Operating rules:
 - Keep plans explicit: goal, acceptance criteria, risk class (A/B/C), gate set (quick/pr/release), validation recipe.
 - Decompose work into small parallelizable units and delegate to specialized `enkidu-*` subagents.
 - Prefer isolated worktrees/branches for parallel work and keep merge order explicit.
+- Require execution from `.ekdu/worktrees/<slice-slug>` only; no implementation/testing from repo root.
+- Enforce packet-scoped naming for every slice branch: `ekdu/<packet-id>-<slice-slug>`.
+- Use collision-safe slice slugs (`s1-<focus>`, `s2-<focus>`) when running packet slices in parallel.
 - Enforce quality ratchet: no regressions in tests, lint/types, security, and scorecard dimensions.
 - Update docs/ADRs/memory when reality changes.
 

@@ -51,7 +51,28 @@ List threats/abuse cases (when relevant), risk score, mitigations, and validatio
 
 - Gate set: <quick|pr|release>
 - Commands:
+  - [ ] `npm run lint`
+  - [ ] `npm run typecheck`
+  - [ ] `npm run test`
+  - [ ] `npm run test:integration` (if gate set >= pr)
+  - [ ] `npm run security:scan` (if gate set >= pr)
+  - [ ] `npm run audit:deps` (if gate set >= pr)
 - Evidence artifacts (scorecards/logs):
+  - execution worktree path: `.ekdu/worktrees/<slice-slug>`
+  - branch: `ekdu/<packet-id>-<slice-slug>`
+  - command results with timestamps
+  - links/paths to any generated reports
+
+## Self-modification evidence (required when changing Enkidu prompts/docs/scripts)
+
+- Why self-modification was needed:
+- Compensating controls applied:
+  - docs/templates updated
+  - tests added/updated
+  - gate evidence captured
+- Reviewer checklist:
+  - [ ] no policy regressions introduced
+  - [ ] workflow transition/exception notes updated if needed
 
 ## Decision log
 

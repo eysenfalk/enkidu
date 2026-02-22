@@ -64,6 +64,15 @@ Work status is represented by queue pointers:
 
 Rule: agents only execute **planned work** (a committed `story.md` + `plan.md` with a pointer in `ready/` or `in-progress/`).
 
+### Control semantics
+
+Enkidu uses two control types and both must be explicit:
+
+- **Mechanical controls**: hard, tool-enforced constraints (permissions, command allowlists, worktree preflight checks).
+- **Procedural controls**: policy/process requirements that reviewers verify (packet hygiene, evidence quality, risk notes).
+
+Policy rule: when a control can be mechanical, prefer mechanical. Procedural-only controls require explicit evidence in the packet.
+
 ---
 
 ## 2) Manual workflow (productive first)
@@ -107,8 +116,21 @@ The output should be:
 - any *constraints* to store in docs/memory
 
 ### Step 4 — implement in a branch/worktree
-Create a feature branch (or better: a worktree):
-- `ekdu/<story-slug>`
+Implementation/testing must run in a dedicated execution worktree:
+
+- branch: `ekdu/<packet-id>-<slice-slug>`
+- worktree dir: `.ekdu/worktrees/<slice-slug>`
+- creation command:
+  - `git worktree add .ekdu/worktrees/<slice-slug> -b ekdu/<packet-id>-<slice-slug> <base-branch>`
+
+Naming guidance:
+- keep `<packet-id>` unchanged from `docs/work/<packet-id>-<slug>/`
+- use collision-safe slice names such as `s1-docs`, `s2-gates`, `s3-tests`
+- avoid reusing slice slugs across active slices for the same packet
+
+Legacy-transition exception:
+- Existing legacy branches/worktrees that predate packet-scoped naming may complete in place.
+- Any new slice created after workflow-of-record adoption must use packet-scoped naming.
 
 Let the implementation agent do the coding and tests.
 
@@ -122,6 +144,12 @@ Run the selected gate set locally:
 - unit tests
 - integration/e2e (as needed)
 - security scan (as needed)
+
+Validation checklist (record in `plan.md`):
+- exact commands run
+- pass/fail result per command
+- timestamp and execution worktree path
+- relevant artifacts/notes for failures and mitigations
 
 ### Step 6 — self-review + PR
 Have `enkidu-reviewer` perform a review pass:
@@ -142,6 +170,13 @@ Merge only when:
 - chosen gate set is green
 - a scorecard exists (or was updated)
 - the packet plan completion checklist is complete
+
+Self-modification policy:
+- Enkidu may modify its own prompts/docs/scripts when required to improve reliability.
+- Compensating controls are mandatory:
+  - update workflow docs/templates in the same packet
+  - add/expand tests for changed enforcement behavior
+  - run PR gate set and record evidence in packet artifacts
 
 ---
 

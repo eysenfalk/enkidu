@@ -14,16 +14,22 @@ Git worktrees are the cleanest way to run multiple agents concurrently without:
 ```
 .ekdu/
   worktrees/
-    ekdu-feature-a/
-    ekdu-feature-b/
-    ekdu-bugfix-c/
+    s1-gates/
+    s2-docs/
+    s3-validation/
 ```
 
 Each folder is a git worktree on its own branch.
 
 Naming:
-- branch: `ekdu/<slug>`
-- worktree dir: `.ekdu/worktrees/<slug>`
+- branch: `ekdu/<packet-id>-<slice-slug>`
+- worktree dir: `.ekdu/worktrees/<slice-slug>`
+- packet id is copied from `docs/work/<packet-id>-<slug>/` and never abbreviated
+- slice slug must be collision-safe for parallel runs (`s1-*`, `s2-*`, ...)
+
+Creation command:
+
+`git worktree add .ekdu/worktrees/<slice-slug> -b ekdu/<packet-id>-<slice-slug> <base-branch>`
 
 ---
 
