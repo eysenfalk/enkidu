@@ -19,7 +19,7 @@ but you *can* get:
 ### A) Use a reasoning-capable model
 Examples:
 - `openai/gpt-5.2`
-- `openai/gpt-5.2-codex` for coding-heavy tasks
+- `openai/gpt-5.3-codex` for coding-heavy tasks
 
 ### B) Turn up reasoning effort
 In `opencode.json` agent config, set:
@@ -40,14 +40,27 @@ Set:
 
 ---
 
-## 2) Web research inside OpenCode (websearch + webfetch)
+## 2) Web research inside OpenCode (websearch_cited + webfetch)
 
 OpenCode has:
-- `websearch`: search the web (Exa-backed)
+- `websearch_cited`: LLM-grounded search with inline citations + `Sources:` list
 - `webfetch`: fetch a URL and include its content
 
-### Enabling websearch
-If you’re using OpenCode Zen (hosted) it’s available by default.
+### Enabling websearch_cited (recommended default)
+Use plugin `opencode-websearch-cited` and pin a provider model.
+
+In this repo, `opencode.json` already configures:
+- `plugin`: `opencode-websearch-cited@1.2.0`
+- `provider.openai.options.websearch_cited.model`: `gpt-5.2`
+
+Authenticate once:
+
+```bash
+opencode auth login
+```
+
+### Optional fallback: built-in websearch
+If you’re using OpenCode Zen (hosted), built-in `websearch` is available by default.
 
 If you’re using another provider, set:
 
@@ -60,6 +73,11 @@ No Exa API key is required; OpenCode provides it.
 ---
 
 ## 3) Recommended agent roles
+
+### `enkidu-deepresearch` (primary)
+- orchestrates parallel web-only subagents for breadth
+- multi-wave collection + verification
+- outputs coverage stats and claim-to-citation mapping
 
 ### `enkidu-deepthink` (primary)
 - high reasoning effort
@@ -84,7 +102,8 @@ Use for:
 
 ## 4) Practical “deep research” loop
 
-Use this loop for any niche or fast-changing topic:
+Use this loop for any niche or fast-changing topic. Enkidu Deep Research Mode
+automates it by orchestrating multiple research subagents for breadth:
 
 1. Clarify the exact question in 1–3 bullets.
 2. Search for sources (prefer primary docs).
@@ -109,7 +128,12 @@ Prefer a dedicated research subagent with **no bash/edit tools**.
 
 ## 6) Troubleshooting
 
-### “I can’t use websearch”
+### “I can’t use websearch_cited”
+- verify plugin is installed in `opencode.json`
+- verify `provider.<name>.options.websearch_cited.model` is set
+- run `opencode auth login`
+
+### “I can’t use built-in websearch”
 - verify `OPENCODE_ENABLE_EXA=1`
 - check OpenCode tool permissions
 
@@ -124,4 +148,5 @@ Fallback:
 ## 7) Where this lives in this repo
 
 - `opencode.json` defines the Enkidu agents and sets reasoning/web options
+- `.opencode/prompts/*.md` contains system prompts wired via `agent.<id>.prompt`
 - `.opencode/commands/enkidu-deepresearch.md` is the canned workflow

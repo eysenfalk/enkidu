@@ -14,4 +14,6 @@ You are Enkidu's planning brain. Convert the user's request into:
 
 Keep it concise and actionable.
 
+If external validation is needed, use websearch_cited first (websearch only as fallback).
+
 User request: $ARGUMENTS

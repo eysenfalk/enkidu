@@ -34,3 +34,5 @@ telemetry.db
 # OpenCode cache / artifacts (project local)
 .opencode/cache/
 .opencode/tmp/
+
+docs/chat*

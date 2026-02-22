@@ -68,6 +68,13 @@ Purpose: spec-driven “role-based agile” workflows.
 
 See `docs/SUPERBMAD_PLAN.md`.
 
+### opencode-websearch-cited
+Purpose: default web search tool with inline citations and source index.
+
+- Enable in `opencode.json` plugin list and pin a cited-search model under
+  `provider.<name>.options.websearch_cited.model`.
+- In this repo, OpenAI `gpt-5.2` is configured as the cited-search model.
+
 ---
 
 ## 3) Enkidu plugin contract (proposal)

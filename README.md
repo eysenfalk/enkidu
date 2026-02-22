@@ -55,9 +55,21 @@ This starter includes adapters and configuration patterns, not hard dependencies
 2) Copy `opencode.json` into your project root (or merge the relevant parts into your existing config).
 3) Restart OpenCode.
 
-### Enable web research inside OpenCode
+### Default cited web search (enabled)
 
-OpenCode’s built-in `websearch` tool uses Exa and can be enabled via environment variable when you’re not using OpenCode’s own hosted provider:
+This starter is configured to use `opencode-websearch-cited` by default, with OpenAI `gpt-5.2` as the cited-search model (`websearch_cited`).
+
+Configured in `opencode.json`:
+- `plugin`: `opencode-websearch-cited@1.2.0`
+- `provider.openai.options.websearch_cited.model`: `gpt-5.2`
+
+Run auth once:
+
+```bash
+opencode auth login
+```
+
+Optional fallback: OpenCode’s built-in `websearch` (Exa)
 
 ```bash
 export OPENCODE_ENABLE_EXA=1
