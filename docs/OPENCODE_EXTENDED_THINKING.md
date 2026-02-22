@@ -90,6 +90,16 @@ Use for:
 - tricky design tradeoffs
 - research before implementation
 
+### `enkidu-planner-pro` (primary)
+- gpt-5.2 with high reasoning effort
+- optimized planning with requirements engineering + red-team pass
+- uses dedicated planning skills for execution DAGs, traceability, and risk scoring
+
+Use for:
+- turning ambiguous requests into implementation-ready plans
+- planning worktree slices and gate-aligned validation
+- pre-implementation threat analysis and mitigation planning
+
 ### `enkidu-research` (subagent)
 - web-only
 - produces cited notes
@@ -150,3 +160,6 @@ Fallback:
 - `opencode.json` defines the Enkidu agents and sets reasoning/web options
 - `.opencode/prompts/*.md` contains system prompts wired via `agent.<id>.prompt`
 - `.opencode/commands/enkidu-deepresearch.md` is the canned workflow
+- `.opencode/commands/enkidu-plan-pro.md` runs the advanced planning workflow
+- `.opencode/commands/enkidu-new-packet.md` creates planned work packets (story + plan + ready pointer)
+- `.opencode/commands/enkidu-work.md` runs the orchestrator over planned packets

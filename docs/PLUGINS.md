@@ -45,7 +45,8 @@ Configured in `enkidu.yaml`.
 ### PsychMem
 Purpose: memory store for agents.
 
-- Enable in `opencode.json` (plugin) and/or `enkidu.yaml` (orchestrator awareness).
+- Enable by installing the PsychMem OpenCode plugin.
+- Recommended: enable via `opencode.json` by adding `"psychmem"` to the `plugin` array.
 - Use it for durable constraints and project conventions.
 
 ### arifOS
@@ -74,6 +75,24 @@ Purpose: analyze whether end users can discover clear product value.
 - Status: installed in this repo at `.opencode/skills/value-realization/`.
 - Upstream source: `https://github.com/Done-0/value-realization`.
 - Use when evaluating product ideas, positioning, adoption, and retention risks.
+
+### planning-optimization (OpenCode skill)
+Purpose: produce dependency-aware, parallelizable execution plans with replanning controls.
+
+- Status: installed in this repo at `.opencode/skills/planning-optimization/`.
+- Built from planning patterns used across LangGraph, AutoGen, CrewAI, OpenHands, and SWE-agent workflows.
+
+### requirements-engineering (OpenCode skill)
+Purpose: convert requests into testable, traceable requirements and acceptance criteria.
+
+- Status: installed in this repo at `.opencode/skills/requirements-engineering/`.
+- Built from OpenAPI, Cucumber/Gherkin, MADR, and definition-of-done practices.
+
+### red-team-planning (OpenCode skill)
+Purpose: add adversarial threat analysis, mitigation planning, and security validation gates during planning.
+
+- Status: installed in this repo at `.opencode/skills/red-team-planning/`.
+- Built from OWASP LLM Top 10, Threat Dragon, promptfoo, garak, PyRIT, and MITRE ATLAS/CALDERA workflows.
 
 ### opencode-websearch-cited
 Purpose: default web search tool with inline citations and source index.

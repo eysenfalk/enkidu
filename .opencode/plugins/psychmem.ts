@@ -1,1 +1,0 @@
-/home/aemon/.config/opencode/plugins/psychmem/.opencode/plugins/psychmem.ts

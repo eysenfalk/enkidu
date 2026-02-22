@@ -47,6 +47,7 @@ Everything is designed to be optional + configurable:
 - **Superpowers** (OpenCode bootstrap + skills injection)  
 - **BMAD Method** (spec-driven, role-based agile workflows)  
 - **value-realization** (OpenCode skill for product value discovery checks)
+- **planning skill pack** (planning-optimization, requirements-engineering, red-team-planning)
 
 This starter includes adapters and configuration patterns, not hard dependencies.
 This repo currently includes `value-realization` under `.opencode/skills/value-realization/`.
@@ -94,6 +95,19 @@ Or use the provided command:
 
 ```text
 /enkidu-deepresearch <your task>
+```
+
+For advanced implementation planning with requirements + red-team passes:
+
+```text
+/enkidu-plan-pro <your task>
+```
+
+To follow the planned-work workflow-of-record:
+
+```text
+/enkidu-new-packet <your task>
+/enkidu-work
 ```
 
 ## Files to read first

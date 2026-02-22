@@ -59,4 +59,12 @@ If docs and memory disagree:
 
 ## 5) Integration
 
-PsychMem is configured via OpenCode plugin config (see `opencode.json`) and can be enabled/disabled in `enkidu.yaml`.
+PsychMem is enabled by installing it as an OpenCode plugin.
+
+OpenCode loads local plugins automatically from:
+- `.opencode/plugins/` (project)
+- `~/.config/opencode/plugins/` (global)
+
+In this repo:
+- Prefer enabling PsychMem via `opencode.json` `plugin` array (npm install on startup).
+- `enkidu.yaml` controls whether the orchestrator treats PsychMem as enabled.

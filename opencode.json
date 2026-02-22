@@ -55,6 +55,10 @@
         "write": false,
         "patch": false,
         "bash": true,
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "list": true,
         "webfetch": true,
         "websearch": true,
         "websearch_cited": true,
@@ -64,10 +68,16 @@
       },
       "permission": {
         "bash": {
-          "*": "allow",
+          "*": "deny",
           "git status*": "allow",
           "git diff*": "allow",
           "git log*": "allow",
+          "git show*": "allow",
+          "git rev-parse*": "allow",
+          "git branch*": "allow",
+          "git fetch*": "allow",
+          "git worktree list*": "allow",
+          "git worktree *": "ask",
           "gh *": "ask"
         },
         "webfetch": "allow",
@@ -100,6 +110,50 @@
         "webfetch": "allow"
       },
       "prompt": "{file:./.opencode/prompts/enkidu-deepthink.md}"
+    },
+    "enkidu-planner-pro": {
+      "description": "Primary planning agent: optimized execution plans with requirements engineering and red-team analysis. Uses dedicated planning skills.",
+      "mode": "primary",
+      "model": "openai/gpt-5.2",
+      "reasoningEffort": "high",
+      "reasoningSummary": "auto",
+      "textVerbosity": "low",
+      "tools": {
+        "edit": true,
+        "write": true,
+        "patch": true,
+        "bash": false,
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "webfetch": true,
+        "websearch": true,
+        "websearch_cited": true,
+        "todoread": true,
+        "todowrite": true,
+        "skill": true
+      },
+      "permission": {
+        "webfetch": "allow",
+        "edit": {
+          "*": "deny",
+          "docs/work/**": "allow",
+          "docs/WORKFLOW.md": "allow",
+          "docs/GATES.md": "allow",
+          "docs/COMMITS.md": "allow",
+          "docs/MEMORY.md": "allow",
+          "docs/PLUGINS.md": "allow",
+          "docs/index.md": "allow",
+          "docs/templates/**": "allow",
+          "docs/adr/**": "allow",
+          "opencode.json": "allow",
+          "enkidu.yaml": "allow",
+          ".opencode/prompts/**": "allow",
+          ".opencode/commands/**": "allow",
+          ".opencode/skills/**": "allow"
+        }
+      },
+      "prompt": "{file:./.opencode/prompts/enkidu-planner-pro.md}"
     },
     "enkidu-deepresearch": {
       "description": "Deep research orchestrator: decomposes the question and spawns many research subagents for breadth. Uses websearch_cited as default search.",
