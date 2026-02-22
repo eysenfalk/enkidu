@@ -23,16 +23,96 @@
     "skill": true
   },
   "permission": {
-    "edit": "allow",
+    "edit": {
+      "*": "deny",
+      "src/**": "allow",
+      "test/**": "allow",
+      "tests/**": "allow",
+      "docs/**": "allow",
+      "scripts/**": "allow",
+      ".opencode/commands/**": "allow",
+      ".opencode/prompts/**": "allow",
+      ".opencode/plugins/**": "allow",
+      ".opencode/skills/**": "allow",
+      "README.md": "allow",
+      "AGENTS.md": "allow",
+      "package.json": "allow",
+      "tsconfig.json": "allow",
+      "bun.lock": "allow",
+      "bun.lockb": "allow",
+      "pnpm-lock.yaml": "allow",
+      "opencode.json": "allow",
+      ".opencode/**": "allow",
+      ".ekdu/worktrees/**": "allow"
+    },
+    "write": {
+      "*": "deny",
+      "src/**": "allow",
+      "test/**": "allow",
+      "tests/**": "allow",
+      "docs/**": "allow",
+      "scripts/**": "allow",
+      ".opencode/commands/**": "allow",
+      ".opencode/prompts/**": "allow",
+      ".opencode/plugins/**": "allow",
+      ".opencode/skills/**": "allow",
+      "opencode.json": "allow",
+      ".opencode/**": "allow",
+      ".ekdu/worktrees/**": "allow"
+    },
+    "patch": {
+      "*": "deny",
+      "src/**": "allow",
+      "test/**": "allow",
+      "tests/**": "allow",
+      "docs/**": "allow",
+      "scripts/**": "allow",
+      ".opencode/commands/**": "allow",
+      ".opencode/prompts/**": "allow",
+      ".opencode/plugins/**": "allow",
+      ".opencode/skills/**": "allow",
+      "opencode.json": "allow",
+      ".opencode/**": "allow",
+      ".ekdu/worktrees/**": "allow"
+    },
     "bash": {
-      "*": "allow",
+      "*": "deny",
       "git status*": "allow",
       "git diff*": "allow",
       "git log*": "allow",
+      "git show*": "allow",
+      "git rev-parse*": "allow",
+      "git branch --list*": "allow",
+      "git branch --show-current": "allow",
+      "git branch -d*": "allow",
+      "git branch -D*": "allow",
+      "git branch --delete*": "allow",
+      "git worktree add *": "allow",
+      "git worktree list*": "allow",
+      "git worktree remove*": "allow",
+      "git worktree prune*": "allow",
+      "git add*": "allow",
+      "git commit*": "allow",
+      "git switch*": "allow",
+      "git checkout*": "allow",
+      "git merge*": "allow",
+      "git fetch*": "allow",
+      "git pull*": "allow",
+      "git push*": "allow",
+      "git restore*": "allow",
+      "git clean*": "allow",
+      "git reset*": "allow",
+      "mkdir -p .ekdu/worktrees*": "allow",
       "npm test*": "allow",
+      "npm run *": "allow",
       "pnpm test*": "allow",
+      "pnpm run *": "allow",
       "bun test*": "allow",
-      "bun run*": "allow"
+      "bun run *": "allow",
+      "pytest*": "allow",
+      "python -m pytest*": "allow",
+      "go test*": "allow",
+      "cargo test*": "allow"
     },
     "webfetch": "allow"
   },
@@ -48,25 +128,31 @@
   "model": "openai/gpt-5.3-codex",
   "agent": {
     "enkidu-orchestrator": {
-      "description": "Primary orchestrator: decomposes work, spawns subagents, enforces gates, assembles PR. Uses websearch_cited as default search.",
+      "description": "Primary orchestrator: decomposes work, spawns subagents, enforces gates, assembles PR. Delegates web research to specialized subagents.",
       "mode": "primary",
       "tools": {
+        "read": true,
+        "glob": true,
+        "list": true,
+        "bash": true,
+        "task": true,
         "edit": false,
         "write": false,
         "patch": false,
-        "bash": true,
-        "read": true,
-        "glob": true,
-        "grep": true,
-        "list": true,
-        "webfetch": true,
-        "websearch": true,
-        "websearch_cited": true,
-        "todoread": true,
-        "todowrite": true,
-        "task": true
+        "grep": false,
+        "lsp": false,
+        "todoread": false,
+        "todowrite": false,
+        "webfetch": false,
+        "websearch": false,
+        "websearch_cited": false,
+        "question": false,
+        "skill": false
       },
       "permission": {
+        "edit": "deny",
+        "write": "deny",
+        "patch": "deny",
         "bash": {
           "*": "deny",
           "git status*": "allow",
@@ -74,13 +160,28 @@
           "git log*": "allow",
           "git show*": "allow",
           "git rev-parse*": "allow",
-          "git branch*": "allow",
-          "git fetch*": "allow",
+          "git branch --list*": "allow",
+          "git branch --show-current": "allow",
+          "git branch -d*": "allow",
+          "git branch -D*": "allow",
+          "git branch --delete*": "allow",
+          "git worktree add *": "allow",
           "git worktree list*": "allow",
-          "git worktree *": "ask",
-          "gh *": "ask"
+          "git worktree remove*": "allow",
+          "git worktree prune*": "allow",
+          "git add*": "allow",
+          "git commit*": "allow",
+          "git switch*": "allow",
+          "git checkout*": "allow",
+          "git merge*": "allow",
+          "git fetch*": "allow",
+          "git pull*": "allow",
+          "git push*": "allow",
+          "git restore*": "allow",
+          "git clean*": "allow",
+          "git reset*": "allow",
+          "mkdir -p .ekdu/worktrees*": "allow"
         },
-        "webfetch": "allow",
         "task": {
           "*": "deny",
           "enkidu-*": "allow"
@@ -91,7 +192,7 @@
     "enkidu-deepthink": {
       "description": "High-reasoning agent for architecture + tricky debugging. Prefers planning, not editing. Uses websearch_cited as default search.",
       "mode": "primary",
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.3-codex",
       "reasoningEffort": "xhigh",
       "reasoningSummary": "auto",
       "textVerbosity": "low",
@@ -104,17 +205,21 @@
         "websearch": true,
         "websearch_cited": true,
         "todoread": true,
-        "todowrite": true
+        "todowrite": true,
+        "task": false
       },
       "permission": {
-        "webfetch": "allow"
+        "webfetch": "allow",
+        "task": {
+          "*": "deny"
+        }
       },
       "prompt": "{file:./.opencode/prompts/enkidu-deepthink.md}"
     },
     "enkidu-planner-pro": {
       "description": "Primary planning agent: optimized execution plans with requirements engineering and red-team analysis. Uses dedicated planning skills.",
       "mode": "primary",
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.3-codex",
       "reasoningEffort": "high",
       "reasoningSummary": "auto",
       "textVerbosity": "low",
@@ -131,7 +236,11 @@
         "websearch_cited": true,
         "todoread": true,
         "todowrite": true,
-        "skill": true
+        "skill": true,
+        "task": true,
+        "question": false,
+        "list": false,
+        "lsp": false
       },
       "permission": {
         "webfetch": "allow",
@@ -141,16 +250,49 @@
           "docs/WORKFLOW.md": "allow",
           "docs/GATES.md": "allow",
           "docs/COMMITS.md": "allow",
-          "docs/MEMORY.md": "allow",
-          "docs/PLUGINS.md": "allow",
           "docs/index.md": "allow",
           "docs/templates/**": "allow",
-          "docs/adr/**": "allow",
-          "opencode.json": "allow",
-          "enkidu.yaml": "allow",
-          ".opencode/prompts/**": "allow",
-          ".opencode/commands/**": "allow",
-          ".opencode/skills/**": "allow"
+          ".ekdu/worktrees/**/docs/work/**": "allow",
+          ".ekdu/worktrees/**/docs/WORKFLOW.md": "allow",
+          ".ekdu/worktrees/**/docs/GATES.md": "allow",
+          ".ekdu/worktrees/**/docs/COMMITS.md": "allow",
+          ".ekdu/worktrees/**/docs/index.md": "allow",
+          ".ekdu/worktrees/**/docs/templates/**": "allow"
+        },
+        "write": {
+          "*": "deny",
+          "docs/work/**": "allow",
+          "docs/WORKFLOW.md": "allow",
+          "docs/GATES.md": "allow",
+          "docs/COMMITS.md": "allow",
+          "docs/index.md": "allow",
+          "docs/templates/**": "allow",
+          ".ekdu/worktrees/**/docs/work/**": "allow",
+          ".ekdu/worktrees/**/docs/WORKFLOW.md": "allow",
+          ".ekdu/worktrees/**/docs/GATES.md": "allow",
+          ".ekdu/worktrees/**/docs/COMMITS.md": "allow",
+          ".ekdu/worktrees/**/docs/index.md": "allow",
+          ".ekdu/worktrees/**/docs/templates/**": "allow"
+        },
+        "patch": {
+          "*": "deny",
+          "docs/work/**": "allow",
+          "docs/WORKFLOW.md": "allow",
+          "docs/GATES.md": "allow",
+          "docs/COMMITS.md": "allow",
+          "docs/index.md": "allow",
+          "docs/templates/**": "allow",
+          ".ekdu/worktrees/**/docs/work/**": "allow",
+          ".ekdu/worktrees/**/docs/WORKFLOW.md": "allow",
+          ".ekdu/worktrees/**/docs/GATES.md": "allow",
+          ".ekdu/worktrees/**/docs/COMMITS.md": "allow",
+          ".ekdu/worktrees/**/docs/index.md": "allow",
+          ".ekdu/worktrees/**/docs/templates/**": "allow"
+        },
+        "task": {
+          "*": "deny",
+          "enkidu-research": "allow",
+          "enkidu-architect": "allow"
         }
       },
       "prompt": "{file:./.opencode/prompts/enkidu-planner-pro.md}"
@@ -158,7 +300,7 @@
     "enkidu-deepresearch": {
       "description": "Deep research orchestrator: decomposes the question and spawns many research subagents for breadth. Uses websearch_cited as default search.",
       "mode": "primary",
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.3-codex",
       "reasoningEffort": "high",
       "reasoningSummary": "auto",
       "textVerbosity": "low",
@@ -189,7 +331,7 @@
       "mode": "subagent",
       "hidden": true,
       "model": "openai/gpt-5.1-codex-mini",
-      "reasoningEffort": "high",
+      "reasoningEffort": "medium",
       "reasoningSummary": "auto",
       "textVerbosity": "low",
       "tools": {
@@ -199,10 +341,14 @@
         "bash": false,
         "webfetch": false,
         "websearch": true,
-        "websearch_cited": true
+        "websearch_cited": true,
+        "task": false
       },
       "permission": {
-        "webfetch": "allow"
+        "webfetch": "allow",
+        "task": {
+          "*": "deny"
+        }
       },
       "prompt": "{file:./.opencode/prompts/enkidu-research.md}"
     },
@@ -220,11 +366,29 @@
         "bash": false,
         "webfetch": true,
         "websearch": true,
-        "websearch_cited": true
+        "websearch_cited": true,
+        "task": false
       },
       "permission": {
-        "edit": "allow",
-        "webfetch": "allow"
+        "edit": {
+          "*": "deny",
+          "docs/adr/**": "allow",
+          ".ekdu/worktrees/**/docs/adr/**": "allow"
+        },
+        "write": {
+          "*": "deny",
+          "docs/adr/**": "allow",
+          ".ekdu/worktrees/**/docs/adr/**": "allow"
+        },
+        "patch": {
+          "*": "deny",
+          "docs/adr/**": "allow",
+          ".ekdu/worktrees/**/docs/adr/**": "allow"
+        },
+        "webfetch": "allow",
+        "task": {
+          "*": "deny"
+        }
       },
       "prompt": "{file:./.opencode/prompts/enkidu-architect.md}"
     },
@@ -232,7 +396,7 @@
       "description": "Implementation subagent: writes code + tests. Minimal web access.",
       "mode": "subagent",
       "model": "openai/gpt-5.3-codex",
-      "reasoningEffort": "high",
+      "reasoningEffort": "medium",
       "textVerbosity": "medium",
       "tools": {
         "edit": true,
@@ -240,22 +404,140 @@
         "patch": true,
         "bash": true,
         "webfetch": true,
-        "websearch": false
+        "websearch": false,
+        "task": false
       },
       "permission": {
-        "edit": "allow",
+        "edit": {
+          "*": "deny",
+          "src/**": "allow",
+          "test/**": "allow",
+          "tests/**": "allow",
+          "docs/**": "allow",
+          "scripts/**": "allow",
+          "README.md": "allow",
+          "AGENTS.md": "allow",
+          "package.json": "allow",
+          "tsconfig.json": "allow",
+          "bun.lock": "allow",
+          "bun.lockb": "allow",
+          "pnpm-lock.yaml": "allow",
+          "opencode.json": "allow",
+          ".opencode/**": "allow",
+          ".ekdu/worktrees/**/src/**": "allow",
+          ".ekdu/worktrees/**/test/**": "allow",
+          ".ekdu/worktrees/**/tests/**": "allow",
+          ".ekdu/worktrees/**/docs/**": "allow",
+          ".ekdu/worktrees/**/scripts/**": "allow",
+          ".ekdu/worktrees/**/README.md": "allow",
+          ".ekdu/worktrees/**/AGENTS.md": "allow",
+          ".ekdu/worktrees/**/package.json": "allow",
+          ".ekdu/worktrees/**/tsconfig.json": "allow",
+          ".ekdu/worktrees/**/bun.lock": "allow",
+          ".ekdu/worktrees/**/bun.lockb": "allow",
+          ".ekdu/worktrees/**/pnpm-lock.yaml": "allow",
+          ".ekdu/worktrees/**/opencode.json": "allow",
+          ".ekdu/worktrees/**/.opencode/**": "allow"
+        },
+        "write": {
+          "*": "deny",
+          "src/**": "allow",
+          "test/**": "allow",
+          "tests/**": "allow",
+          "docs/**": "allow",
+          "scripts/**": "allow",
+          "README.md": "allow",
+          "AGENTS.md": "allow",
+          "package.json": "allow",
+          "tsconfig.json": "allow",
+          "bun.lock": "allow",
+          "bun.lockb": "allow",
+          "pnpm-lock.yaml": "allow",
+          "opencode.json": "allow",
+          ".opencode/**": "allow",
+          ".ekdu/worktrees/**/src/**": "allow",
+          ".ekdu/worktrees/**/test/**": "allow",
+          ".ekdu/worktrees/**/tests/**": "allow",
+          ".ekdu/worktrees/**/docs/**": "allow",
+          ".ekdu/worktrees/**/scripts/**": "allow",
+          ".ekdu/worktrees/**/README.md": "allow",
+          ".ekdu/worktrees/**/AGENTS.md": "allow",
+          ".ekdu/worktrees/**/package.json": "allow",
+          ".ekdu/worktrees/**/tsconfig.json": "allow",
+          ".ekdu/worktrees/**/bun.lock": "allow",
+          ".ekdu/worktrees/**/bun.lockb": "allow",
+          ".ekdu/worktrees/**/pnpm-lock.yaml": "allow",
+          ".ekdu/worktrees/**/opencode.json": "allow",
+          ".ekdu/worktrees/**/.opencode/**": "allow"
+        },
+        "patch": {
+          "*": "deny",
+          "src/**": "allow",
+          "test/**": "allow",
+          "tests/**": "allow",
+          "docs/**": "allow",
+          "scripts/**": "allow",
+          "README.md": "allow",
+          "AGENTS.md": "allow",
+          "package.json": "allow",
+          "tsconfig.json": "allow",
+          "bun.lock": "allow",
+          "bun.lockb": "allow",
+          "pnpm-lock.yaml": "allow",
+          "opencode.json": "allow",
+          ".opencode/**": "allow",
+          ".ekdu/worktrees/**/src/**": "allow",
+          ".ekdu/worktrees/**/test/**": "allow",
+          ".ekdu/worktrees/**/tests/**": "allow",
+          ".ekdu/worktrees/**/docs/**": "allow",
+          ".ekdu/worktrees/**/scripts/**": "allow",
+          ".ekdu/worktrees/**/README.md": "allow",
+          ".ekdu/worktrees/**/AGENTS.md": "allow",
+          ".ekdu/worktrees/**/package.json": "allow",
+          ".ekdu/worktrees/**/tsconfig.json": "allow",
+          ".ekdu/worktrees/**/bun.lock": "allow",
+          ".ekdu/worktrees/**/bun.lockb": "allow",
+          ".ekdu/worktrees/**/pnpm-lock.yaml": "allow",
+          ".ekdu/worktrees/**/opencode.json": "allow",
+          ".ekdu/worktrees/**/.opencode/**": "allow"
+        },
         "bash": {
-          "*": "allow",
+          "*": "deny",
           "git status*": "allow",
           "git diff*": "allow",
-          "git add*": "allow",
-          "git commit*": "allow",
+          "git log*": "allow",
+          "git show*": "allow",
+          "git rev-parse*": "allow",
+          "git branch --list*": "allow",
+          "git branch --show-current": "allow",
+          "git worktree list*": "allow",
           "npm test*": "allow",
+          "npm run *": "allow",
+          "npm run test*": "allow",
+          "npm run lint*": "allow",
+          "npm run typecheck*": "allow",
+          "npm run build*": "allow",
           "pnpm test*": "allow",
+          "pnpm run *": "allow",
+          "pnpm run test*": "allow",
+          "pnpm run lint*": "allow",
+          "pnpm run typecheck*": "allow",
+          "pnpm run build*": "allow",
           "bun test*": "allow",
-          "bun run*": "allow"
+          "bun run *": "allow",
+          "bun run test*": "allow",
+          "bun run lint*": "allow",
+          "bun run typecheck*": "allow",
+          "bun run build*": "allow",
+          "pytest*": "allow",
+          "python -m pytest*": "allow",
+          "go test*": "allow",
+          "cargo test*": "allow"
         },
-        "webfetch": "allow"
+        "webfetch": "allow",
+        "task": {
+          "*": "deny"
+        }
       },
       "prompt": "{file:./.opencode/prompts/enkidu-implementer.md}"
     },
@@ -271,25 +553,147 @@
         "patch": true,
         "bash": true,
         "webfetch": true,
-        "websearch": false
+        "websearch": false,
+        "task": false
       },
       "permission": {
-        "edit": "allow",
-        "bash": {
-          "*": "allow",
-          "npm test*": "allow",
-          "pnpm test*": "allow",
-          "bun test*": "allow",
-          "bun run*": "allow"
+        "edit": {
+          "*": "deny",
+          "src/**": "allow",
+          "test/**": "allow",
+          "tests/**": "allow",
+          "docs/**": "allow",
+          "scripts/**": "allow",
+          "README.md": "allow",
+          "AGENTS.md": "allow",
+          "package.json": "allow",
+          "tsconfig.json": "allow",
+          "bun.lock": "allow",
+          "bun.lockb": "allow",
+          "pnpm-lock.yaml": "allow",
+          ".ekdu/worktrees/**/src/**": "allow",
+          ".ekdu/worktrees/**/test/**": "allow",
+          ".ekdu/worktrees/**/tests/**": "allow",
+          ".ekdu/worktrees/**/docs/**": "allow",
+          ".ekdu/worktrees/**/scripts/**": "allow",
+          ".ekdu/worktrees/**/README.md": "allow",
+          ".ekdu/worktrees/**/AGENTS.md": "allow",
+          ".ekdu/worktrees/**/package.json": "allow",
+          ".ekdu/worktrees/**/tsconfig.json": "allow",
+          ".ekdu/worktrees/**/bun.lock": "allow",
+          ".ekdu/worktrees/**/bun.lockb": "allow",
+          ".ekdu/worktrees/**/pnpm-lock.yaml": "allow",
+          "opencode.json": "deny",
+          ".opencode/**": "deny",
+          ".ekdu/worktrees/**/opencode.json": "deny",
+          ".ekdu/worktrees/**/.opencode/**": "deny"
         },
-        "webfetch": "allow"
+        "write": {
+          "*": "deny",
+          "src/**": "allow",
+          "test/**": "allow",
+          "tests/**": "allow",
+          "docs/**": "allow",
+          "scripts/**": "allow",
+          "README.md": "allow",
+          "AGENTS.md": "allow",
+          "package.json": "allow",
+          "tsconfig.json": "allow",
+          "bun.lock": "allow",
+          "bun.lockb": "allow",
+          "pnpm-lock.yaml": "allow",
+          ".ekdu/worktrees/**/src/**": "allow",
+          ".ekdu/worktrees/**/test/**": "allow",
+          ".ekdu/worktrees/**/tests/**": "allow",
+          ".ekdu/worktrees/**/docs/**": "allow",
+          ".ekdu/worktrees/**/scripts/**": "allow",
+          ".ekdu/worktrees/**/README.md": "allow",
+          ".ekdu/worktrees/**/AGENTS.md": "allow",
+          ".ekdu/worktrees/**/package.json": "allow",
+          ".ekdu/worktrees/**/tsconfig.json": "allow",
+          ".ekdu/worktrees/**/bun.lock": "allow",
+          ".ekdu/worktrees/**/bun.lockb": "allow",
+          ".ekdu/worktrees/**/pnpm-lock.yaml": "allow",
+          "opencode.json": "deny",
+          ".opencode/**": "deny",
+          ".ekdu/worktrees/**/opencode.json": "deny",
+          ".ekdu/worktrees/**/.opencode/**": "deny"
+        },
+        "patch": {
+          "*": "deny",
+          "src/**": "allow",
+          "test/**": "allow",
+          "tests/**": "allow",
+          "docs/**": "allow",
+          "scripts/**": "allow",
+          "README.md": "allow",
+          "AGENTS.md": "allow",
+          "package.json": "allow",
+          "tsconfig.json": "allow",
+          "bun.lock": "allow",
+          "bun.lockb": "allow",
+          "pnpm-lock.yaml": "allow",
+          ".ekdu/worktrees/**/src/**": "allow",
+          ".ekdu/worktrees/**/test/**": "allow",
+          ".ekdu/worktrees/**/tests/**": "allow",
+          ".ekdu/worktrees/**/docs/**": "allow",
+          ".ekdu/worktrees/**/scripts/**": "allow",
+          ".ekdu/worktrees/**/README.md": "allow",
+          ".ekdu/worktrees/**/AGENTS.md": "allow",
+          ".ekdu/worktrees/**/package.json": "allow",
+          ".ekdu/worktrees/**/tsconfig.json": "allow",
+          ".ekdu/worktrees/**/bun.lock": "allow",
+          ".ekdu/worktrees/**/bun.lockb": "allow",
+          ".ekdu/worktrees/**/pnpm-lock.yaml": "allow",
+          "opencode.json": "deny",
+          ".opencode/**": "deny",
+          ".ekdu/worktrees/**/opencode.json": "deny",
+          ".ekdu/worktrees/**/.opencode/**": "deny"
+        },
+        "bash": {
+          "*": "deny",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "git show*": "allow",
+          "git rev-parse*": "allow",
+          "git branch --list*": "allow",
+          "git branch --show-current": "allow",
+          "git worktree list*": "allow",
+          "npm test*": "allow",
+          "npm run *": "allow",
+          "npm run test*": "allow",
+          "npm run lint*": "allow",
+          "npm run typecheck*": "allow",
+          "npm run build*": "allow",
+          "pnpm test*": "allow",
+          "pnpm run *": "allow",
+          "pnpm run test*": "allow",
+          "pnpm run lint*": "allow",
+          "pnpm run typecheck*": "allow",
+          "pnpm run build*": "allow",
+          "bun test*": "allow",
+          "bun run *": "allow",
+          "bun run test*": "allow",
+          "bun run lint*": "allow",
+          "bun run typecheck*": "allow",
+          "bun run build*": "allow",
+          "pytest*": "allow",
+          "python -m pytest*": "allow",
+          "go test*": "allow",
+          "cargo test*": "allow"
+        },
+        "webfetch": "allow",
+        "task": {
+          "*": "deny"
+        }
       },
       "prompt": "{file:./.opencode/prompts/enkidu-tester.md}"
     },
     "enkidu-reviewer": {
       "description": "Review subagent: code review, style, edge cases. No edits.",
       "mode": "subagent",
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.3-codex",
       "reasoningEffort": "high",
       "reasoningSummary": "auto",
       "textVerbosity": "low",
@@ -303,12 +707,106 @@
         "read": true,
         "grep": true,
         "glob": true,
-        "list": true
+        "list": true,
+        "task": false
       },
       "permission": {
-        "webfetch": "allow"
+        "webfetch": "allow",
+        "task": {
+          "*": "deny"
+        }
       },
       "prompt": "{file:./.opencode/prompts/enkidu-reviewer.md}"
+    },
+    "enkidu-requirements": {
+      "description": "Requirements critique subagent: strengthens acceptance criteria and testability.",
+      "mode": "subagent",
+      "hidden": true,
+      "model": "openai/gpt-5.3-codex",
+      "reasoningEffort": "high",
+      "reasoningSummary": "auto",
+      "textVerbosity": "low",
+      "tools": {
+        "edit": false,
+        "write": false,
+        "patch": false,
+        "bash": false,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "list": true,
+        "webfetch": false,
+        "websearch": false,
+        "websearch_cited": false,
+        "task": false,
+        "skill": false
+      },
+      "permission": {
+        "task": {
+          "*": "deny"
+        }
+      },
+      "prompt": "{file:./.opencode/prompts/enkidu-requirements.md}"
+    },
+    "enkidu-redteam": {
+      "description": "Red-team critique subagent: threat modeling and abuse-case analysis.",
+      "mode": "subagent",
+      "hidden": true,
+      "model": "openai/gpt-5.3-codex",
+      "reasoningEffort": "high",
+      "reasoningSummary": "auto",
+      "textVerbosity": "low",
+      "tools": {
+        "edit": false,
+        "write": false,
+        "patch": false,
+        "bash": false,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "list": true,
+        "webfetch": false,
+        "websearch": false,
+        "websearch_cited": false,
+        "task": false,
+        "skill": false
+      },
+      "permission": {
+        "task": {
+          "*": "deny"
+        }
+      },
+      "prompt": "{file:./.opencode/prompts/enkidu-redteam.md}"
+    },
+    "enkidu-pragmatist": {
+      "description": "Pragmatist critique subagent: value/effectiveness check and scope control.",
+      "mode": "subagent",
+      "hidden": true,
+      "model": "openai/gpt-5.3-codex",
+      "reasoningEffort": "high",
+      "reasoningSummary": "auto",
+      "textVerbosity": "low",
+      "tools": {
+        "edit": false,
+        "write": false,
+        "patch": false,
+        "bash": false,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "list": true,
+        "webfetch": false,
+        "websearch": false,
+        "websearch_cited": false,
+        "task": false,
+        "skill": true
+      },
+      "permission": {
+        "task": {
+          "*": "deny"
+        }
+      },
+      "prompt": "{file:./.opencode/prompts/enkidu-pragmatist.md}"
     }
   }
 }
