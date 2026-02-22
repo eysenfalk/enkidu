@@ -68,6 +68,13 @@ Purpose: spec-driven “role-based agile” workflows.
 
 See `docs/SUPERBMAD_PLAN.md`.
 
+### value-realization (OpenCode skill)
+Purpose: analyze whether end users can discover clear product value.
+
+- Installed in this repo at `.opencode/skills/value-realization/`.
+- Upstream source: `https://github.com/Done-0/value-realization`.
+- Use when evaluating product ideas, positioning, adoption, and retention risks.
+
 ### opencode-websearch-cited
 Purpose: default web search tool with inline citations and source index.
 
