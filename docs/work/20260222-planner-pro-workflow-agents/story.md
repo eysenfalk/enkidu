@@ -1,7 +1,7 @@
 # Story: Planner Pro workflow review agents + architect pass
 
 **Owner:** aemon  
-**Status:** ready  
+**Status:** done  
 **Target gate set:** pr  
 **Risk class:** A
 
@@ -20,16 +20,16 @@ Current state is inconsistent: critique agents are partially defined in config, 
 
 ## Acceptance criteria
 
-- [ ] Planner Pro workflow defines explicit pass order: requirements -> red-team -> pragmatist -> architect -> plan-reviewer -> synthesis.
-- [ ] A new command `/enkidu-plan-new` exists and is orchestrated by `enkidu-planner-pro` using all required reviewer passes.
-- [ ] A new command `/enkidu-plan-review` exists and is orchestrated by `enkidu-planner-pro` for update/review of an existing packet plan with a subset policy.
-- [ ] `/enkidu-plan-pro` is removed, and docs/command references are updated to use `/enkidu-plan-new` and `/enkidu-plan-review`.
-- [ ] A new `enkidu-plan-reviewer` subagent exists and is wired into Planner Pro task permissions.
-- [ ] Requirements engineer behavior includes a controlled user-question loop (targeted questions only, with recommended defaults and impact).
-- [ ] Existing red-team and pragmatist agents are fully wired with valid prompt artifacts and read-only permissions.
-- [ ] Architect is explicitly included in Planner Pro workflow for interface/ADR implications.
-- [ ] Planner outputs include a consolidated traceability matrix and risk-blocker status from all review passes.
-- [ ] Security posture is preserved: critique subagents remain non-mutating (no edit/write/patch/bash/task escalation).
+- [x] Planner Pro workflow defines explicit pass order: requirements -> red-team -> pragmatist -> architect -> plan-reviewer -> synthesis.
+- [x] A new command `/enkidu-plan-new` exists and is orchestrated by `enkidu-planner-pro` using all required reviewer passes.
+- [x] A new command `/enkidu-plan-review` exists and is orchestrated by `enkidu-planner-pro` for update/review of an existing packet plan with a subset policy.
+- [x] `/enkidu-plan-pro` is removed, and docs/command references are updated to use `/enkidu-plan-new` and `/enkidu-plan-review`.
+- [x] A new `enkidu-plan-reviewer` subagent exists and is wired into Planner Pro task permissions.
+- [x] Requirements engineer behavior includes a controlled user-question loop (targeted questions only, with recommended defaults and impact).
+- [x] Existing red-team and pragmatist agents are fully wired with valid prompt artifacts and read-only permissions.
+- [x] Architect is explicitly included in Planner Pro workflow for interface/ADR implications.
+- [x] Planner outputs include a consolidated traceability matrix and risk-blocker status from all review passes.
+- [x] Security posture is preserved: critique subagents remain non-mutating (no edit/write/patch/bash/task escalation).
 
 ## Non-goals
 
