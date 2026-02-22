@@ -45,9 +45,11 @@ Everything is designed to be optional + configurable:
 - **PsychMem** (project/user memory for agents)  
 - **arifOS** (governance kernel / policy floors)  
 - **Superpowers** (OpenCode bootstrap + skills injection)  
-- **BMAD Method** (spec-driven, role-based agile workflows)
+- **BMAD Method** (spec-driven, role-based agile workflows)  
+- **value-realization** (OpenCode skill for product value discovery checks)
 
 This starter includes adapters and configuration patterns, not hard dependencies.
+This repo currently includes `value-realization` under `.opencode/skills/value-realization/`.
 
 ## Quickstart (minimal)
 
