@@ -48,10 +48,21 @@ Enkidu doesn’t throw that away — it *maps it to agentic execution*.
 - **Retro** becomes *quality ratchet + eval-driven improvement*.
 
 ### Artifacts (the things that outlive a chat)
-- **Story spec**: `docs/plans/<date>-<slug>.md` (or your tracker)
+- **Work packet** (canonical): `docs/work/<id>-<slug>/`
+  - `story.md` (requirements)
+  - `plan.md` (execution plan + progress + evidence pointers)
 - **ADRs**: `docs/adr/ADR-*.md` for decisions
 - **Context bundles**: saved retrieval for recurring tasks
 - **Scorecards**: `evals/scorecards/*.json` for measurable quality
+
+Work status is represented by queue pointers:
+- `docs/work/_queue/backlog/`
+- `docs/work/_queue/ready/`
+- `docs/work/_queue/in-progress/`
+- `docs/work/_queue/blocked/`
+- `docs/work/_queue/done/`
+
+Rule: agents only execute **planned work** (a committed `story.md` + `plan.md` with a pointer in `ready/` or `in-progress/`).
 
 ---
 
@@ -65,7 +76,13 @@ Pick something small and *verifiable*:
 - one component + tests
 - one scraper enhancement with fixtures
 
-Create a story file using the template in `docs/templates/story.md`.
+Create a work packet:
+- `docs/work/<id>-<slug>/story.md` (use `docs/templates/story.md`)
+- `docs/work/<id>-<slug>/plan.md` (use `docs/templates/plan.md`)
+- add a pointer in `docs/work/_queue/ready/<id>-<slug>.md` (use `docs/templates/work-pointer.md`)
+
+In OpenCode:
+- `/enkidu-new-packet <your request>` creates a new planned packet (story + plan + ready pointer).
 
 ### Step 2 — plan (no edits)
 Use the planning agent (or `enkidu-deepthink`) to:
@@ -75,8 +92,10 @@ Use the planning agent (or `enkidu-deepthink`) to:
 - identify context requirements (which docs, which files, which data)
 
 In OpenCode:
-- switch to `enkidu-deepthink`, or
-- run `/enkidu-plan`
+- run `/enkidu-plan-pro` for requirements + optimized DAG + red-team pass
+- or run `/enkidu-plan` for a lighter planning pass
+
+Note: Planner Pro may edit plan/workflow artifacts, but must not edit application code.
 
 ### Step 3 — (optional) research
 If you need APIs, libraries, regulations, or scraping constraints:
@@ -92,6 +111,9 @@ Create a feature branch (or better: a worktree):
 - `ekdu/<story-slug>`
 
 Let the implementation agent do the coding and tests.
+
+Commit policy:
+- Use atomic commits (see `docs/COMMITS.md`).
 
 ### Step 5 — validate
 Run the selected gate set locally:
@@ -116,7 +138,10 @@ Then open a PR. The PR description must include:
 - scorecard deltas
 
 ### Step 7 — merge
-Merge only when gates pass and the PR is legible.
+Merge only when:
+- chosen gate set is green
+- a scorecard exists (or was updated)
+- the packet plan completion checklist is complete
 
 ---
 
@@ -129,10 +154,16 @@ One orchestrator agent coordinates multiple subagents:
 
 - `enkidu-orchestrator` (primary)
   - decomposes the story into parallelizable units
+  - selects from planned work packets only
+  - asks for priority when multiple unfinished packets exist
   - creates worktrees/branches
   - dispatches subagents to each worktree
   - enforces gates
   - merges work (merge train)
+  - never edits repo files directly (delegates edits to subagents)
+
+In OpenCode:
+- `/enkidu-work` runs the orchestrator workflow over planned packets.
 
 Subagents:
 - `enkidu-research` (web only)

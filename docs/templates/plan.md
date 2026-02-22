@@ -1,26 +1,57 @@
 # Execution plan: <title>
 
 **Owner:** <name>  
-**Created:** <date>  
+**Created:** <YYYY-MM-DD>  
 **Status:** active | paused | done  
-**Gate set:** quick | pr | release
+**Gate set:** quick | pr | release  
+**Risk class:** A | B | C
 
-## Goal
+## Objective and scope
 
-## Approach
+- Goal:
+- Non-goals:
+- Measurable success criteria:
 
-## Task breakdown (parallelizable)
+## Requirements baseline
 
-- Worktree A:
+### Functional requirements
+
+- ...
+
+### Non-functional requirements (with metrics)
+
+- ...
+
+### Acceptance criteria
+
+- [ ] ...
+
+## Execution plan (DAG + worktree slices)
+
+Describe the dependency-aware plan.
+
+- Slice 0 (docs/plan-of-record):
+  - [ ] Create/update work packet artifacts
+  - [ ] Commit: `docs(work): ...`
+- Slice 1 (implementation):
   - [ ] ...
-- Worktree B:
+  - [ ] Commit: `feat(...): ...`
+- Slice 2 (tests/validation):
   - [ ] ...
-- Shared:
-  - [ ] ...
+  - [ ] Commit: `test(...): ...`
 
-## Risks and mitigations
+Notes:
+- Use atomic commits (one logical change per commit). See `docs/COMMITS.md`.
 
-## Validation and gates
+## Red-team risk register and mitigations
+
+List threats/abuse cases (when relevant), risk score, mitigations, and validation.
+
+## Gate and validation matrix
+
+- Gate set: <quick|pr|release>
+- Commands:
+- Evidence artifacts (scorecards/logs):
 
 ## Decision log
 
@@ -32,7 +63,8 @@ Timestamped notes.
 
 ## Completion checklist
 
-- [ ] gates green
-- [ ] scorecard recorded
-- [ ] docs updated
+- [ ] acceptance criteria satisfied
+- [ ] chosen gate set is green
+- [ ] scorecard recorded (if required)
+- [ ] docs/ADRs updated (if reality changed)
 - [ ] memory updated (if enabled)

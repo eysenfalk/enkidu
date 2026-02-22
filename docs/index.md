@@ -6,6 +6,7 @@ Enkidu’s docs are the **system-of-record**.
 ## Core workflow
 
 - `WORKFLOW.md` — manual → automated flow, from idea to merged PR
+- `COMMITS.md` — atomic commits + commit message standards
 - `AUTONOMY_LADDER.md` — what “fully autonomous” means and how to earn it
 - `GATES.md` — tests, quality gates, governance gates, release gates
 - `QUALITY_RATCHET.md` — “next 1000 LOC must be better than the last”
