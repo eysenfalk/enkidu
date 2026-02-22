@@ -23,9 +23,9 @@
     "skill": true
   },
   "permission": {
-    "edit": "ask",
+    "edit": "allow",
     "bash": {
-      "*": "ask",
+      "*": "allow",
       "git status*": "allow",
       "git diff*": "allow",
       "git log*": "allow",
@@ -64,7 +64,7 @@
       },
       "permission": {
         "bash": {
-          "*": "ask",
+          "*": "allow",
           "git status*": "allow",
           "git diff*": "allow",
           "git log*": "allow",
@@ -169,7 +169,7 @@
         "websearch_cited": true
       },
       "permission": {
-        "edit": "ask",
+        "edit": "allow",
         "webfetch": "allow"
       },
       "prompt": "{file:./.opencode/prompts/enkidu-architect.md}"
@@ -191,11 +191,11 @@
       "permission": {
         "edit": "allow",
         "bash": {
-          "*": "ask",
+          "*": "allow",
           "git status*": "allow",
           "git diff*": "allow",
           "git add*": "allow",
-          "git commit*": "ask",
+          "git commit*": "allow",
           "npm test*": "allow",
           "pnpm test*": "allow",
           "bun test*": "allow",
@@ -222,7 +222,7 @@
       "permission": {
         "edit": "allow",
         "bash": {
-          "*": "ask",
+          "*": "allow",
           "npm test*": "allow",
           "pnpm test*": "allow",
           "bun test*": "allow",
