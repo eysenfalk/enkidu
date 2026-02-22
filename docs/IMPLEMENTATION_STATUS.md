@@ -22,6 +22,7 @@ Scope of this status:
 - Tool permissions are explicitly scoped by agent, including web research defaults through `websearch_cited`.
 - Reusable slash commands exist in `.opencode/commands/` for planning, slicing, review, and deep research.
 - A reusable workflow skill exists in `.opencode/skills/enkidu/SKILL.md`.
+- Advanced planning assets are present: `enkidu-planner-pro` plus three dedicated skills for planning optimization, requirements engineering, and red-team planning.
 
 ### C) Config and CLI skeleton (functional for basics)
 - `enkidu.yaml` defines project config, plugin toggles, workflow defaults, autonomy level, ratchet thresholds, and gate sets.
