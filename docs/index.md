@@ -24,6 +24,7 @@ Enkidu’s docs are the **system-of-record**.
 - `OPENCODE_EXTENDED_THINKING.md` — how to get “deep thinking + web research” in OpenCode
 - `DEEP_RESEARCH.md` — Enkidu deep research mode (parallel web research with citations)
 - `PLUGINS.md` — plugin system and optional modules (PsychMem, arifOS, Superpowers, BMAD)
+- `IMPLEMENTATION_STATUS.md` - current implemented vs partial vs missing status and priorities
 - `SUPERBMAD_PLAN.md` — plan to combine Superpowers + BMAD into one pack
 
 ## Example vertical (your job heatmap project)

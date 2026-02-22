@@ -1,210 +1,151 @@
-# Implementation status: what exists vs what is missing
+# Implementation status
 
-Last updated: 2026-02-22
+This document tracks what is implemented today in this starter repo, what is only scaffolding, and what still needs to be built.
 
-This file is a reality check against the current repository state.
-
-Scope of this assessment:
-- repository code and scripts
-- `docs/` system-of-record
-- OpenCode command/agent configuration
+Scope of this status:
+- configuration and CLI runtime code in `src/`
+- helper scripts in `scripts/`
+- OpenCode integration in `.opencode/` and `opencode.json`
+- quality/eval scaffolding in `evals/`
 
 ---
 
 ## 1) What is already implemented
 
-### 1.1 Project framing and architecture decisions
+### A) Documentation and process baseline (strong)
+- `docs/` is broad and organized, with workflow, gates, quality ratchet, context graph, security, observability, governance, and ADR coverage.
+- `AGENTS.md` and `docs/index.md` establish a clear system-of-record model and agent entry path.
+- Templates exist for planning and PR/story/ADR artifacts in `docs/templates/`.
 
-Implemented:
-- [x] Core project direction is documented (`docs/WORKFLOW.md`, `docs/GATES.md`, `docs/QUALITY_RATCHET.md`, `docs/CONTEXT_GRAPH.md`, `docs/GOVERNANCE.md`, `docs/OBSERVABILITY.md`).
-- [x] Naming and core decisions are captured in ADRs (`docs/adr/ADR-0001` to `ADR-0004`).
-- [x] `AGENTS.md` is kept short as a map and points to docs as source-of-truth.
+### B) OpenCode integration scaffold (usable)
+- `opencode.json` defines a multi-agent topology (orchestrator, deepthink, deepresearch, implementer, tester, reviewer, and subagents).
+- Tool permissions are explicitly scoped by agent, including web research defaults through `websearch_cited`.
+- Reusable slash commands exist in `.opencode/commands/` for planning, slicing, review, and deep research.
+- A reusable workflow skill exists in `.opencode/skills/enkidu/SKILL.md`.
 
-Value:
-- Strong conceptual foundation.
-- Clear long-term target (autonomous, gated, parallel agent workflows).
+### C) Config and CLI skeleton (functional for basics)
+- `enkidu.yaml` defines project config, plugin toggles, workflow defaults, autonomy level, ratchet thresholds, and gate sets.
+- `src/config.ts` loads and validates config with `zod`.
+- `src/cli.ts` provides working commands for:
+  - `config`
+  - `worktree:create <branch>`
+  - `worktree:remove <branch>`
+- `src/worktrees.ts` executes `git worktree add/remove` flows and branch cleanup.
 
-### 1.2 OpenCode workflow scaffolding
+### D) Safety and policy starter controls (basic)
+- `.opencode/plugins/env-protection.js` blocks `.env` reads via tool hook.
+- `.opencode/plugins/enkidu-compaction-context.ts` injects compaction context and reminds the model to preserve active execution state.
 
-Implemented:
-- [x] OpenCode commands exist for planning/slicing/review/deep-research:
-  - `.opencode/commands/enkidu-plan.md`
-  - `.opencode/commands/enkidu-slice.md`
-  - `.opencode/commands/enkidu-review.md`
-  - `.opencode/commands/enkidu-deepresearch.md`
-- [x] Agent profiles are defined in `opencode.json`:
-  - orchestrator, deepthink, deepresearch, research, architect, implementer, tester, reviewer.
-- [x] Prompt files exist for each major agent role (`.opencode/prompts/*.md`).
-- [x] Cited web search plugin is configured (`opencode-websearch-cited`) and wired to OpenAI model options.
-
-Value:
-- You already have a usable command surface and role separation.
-- Deep research mode is configured, documented, and repeatable.
-
-### 1.3 Safety scaffolding
-
-Implemented:
-- [x] Example `.env` protection plugin exists (`.opencode/plugins/env-protection.js`).
-- [x] Security policy docs are explicit (`docs/SECURITY.md`).
-- [x] Tool permissions are partially constrained in `opencode.json`.
-
-Value:
-- Baseline policy exists and can be tightened incrementally.
-
-### 1.4 Enkidu core code (early starter)
-
-Implemented:
-- [x] Basic CLI shell exists (`src/cli.ts`).
-- [x] Config loading and validation exists (`src/config.ts`, `enkidu.yaml`).
-- [x] Worktree create/remove manager exists (`src/worktrees.ts`).
-- [x] Context graph schema exists as SQL starter (`src/context-graph/schema.sql`).
-
-Value:
-- Enough foundation to begin real implementation in small vertical slices.
-
-### 1.5 Quality and eval scaffolding
-
-Implemented:
-- [x] Scorecard schema exists (`evals/scorecard.schema.json`).
-- [x] Ratchet strategy is documented (`docs/QUALITY_RATCHET.md`).
-- [x] Gate sets are defined in docs/config (`docs/GATES.md`, `enkidu.yaml`).
-
-Value:
-- The measurement model exists, even though enforcement is not complete yet.
+### E) Eval/scorecard foundation (schema-level)
+- `evals/scorecard.schema.json` defines a concrete JSON schema for PR/gate quality reporting.
+- `evals/README.md` documents intended scorecard workflow.
 
 ---
 
-## 2) What is partially implemented (present but not production-ready)
+## 2) What is partially implemented
 
-### 2.1 Worktree and merge operations
+### A) Worktree automation
+- CLI + shell helpers exist (`src/worktrees.ts`, `scripts/enkidu-worktree.sh`), but orchestration around parallel execution and lifecycle management is still manual.
+- Merge train support exists only as a manual stub (`scripts/enkidu-merge-train.sh`).
 
-Current state:
-- [~] Manual helper scripts exist (`scripts/enkidu-worktree.sh`, `scripts/enkidu-merge-train.sh`).
-- [~] CLI supports worktree create/remove.
+### B) Gates and quality ratchet execution
+- Gate definitions and thresholds are documented/configured (`docs/GATES.md`, `enkidu.yaml`).
+- Runtime enforcement is not implemented; `scripts/run-gates.sh` is placeholder output only.
+- `package.json` scripts for `lint` and `test` are placeholders and do not run real checks.
 
-Gap:
-- No orchestrator-level pipeline management (queueing, status tracking, retries, conflict-aware scheduling).
-- Merge train script is a stub, not an automated CI-integrated merge queue.
+### C) Context graph
+- Context graph design is well documented (`docs/CONTEXT_GRAPH.md`, ADR-0003).
+- Implementation module is a stub only (`src/context-graph/README.md`), with no storage schema, ingest pipeline, or retrieval CLI.
 
-### 2.2 Gates and testing
+### D) Plugin/module integration depth
+- PsychMem, arifOS, and SuperBMAD toggles are represented in config.
+- Integration is mostly declarative at this stage; no concrete runtime adapters or enforcement loops are present in the repo.
 
-Current state:
-- [~] Gate definitions and scripts exist.
-
-Gap:
-- `scripts/run-gates.sh` is placeholder-only (prints TODOs).
-- `package.json` scripts for lint/test are placeholders.
-- No real lint config, no real unit/integration/e2e setup.
-- No CI workflow enforcing gates on PRs.
-
-### 2.3 Context graph
-
-Current state:
-- [~] Data model and storage decision are documented.
-- [~] SQL schema exists.
-
-Gap:
-- No graph ingestion/indexers (docs/code/tests/PR edges).
-- No retrieval API to build context bundles from graph state.
-- No automatic updates on PR/test/ADR events.
-
-### 2.4 Quality ratchet automation
-
-Current state:
-- [~] Ratchet concept + scorecard schema are in place.
-
-Gap:
-- No scorecard producer wired into CI.
-- No merge-blocking ratchet enforcement.
-- No automated retrospection loop that converts failures into new tests/rules.
-
-### 2.5 Plugin integrations
-
-Current state:
-- [~] PsychMem/arifOS/SuperBMAD are documented and configurable in principle.
-
-Gap:
-- No concrete adapter implementation for PsychMem read/write flows.
-- No concrete arifOS policy call + verdict enforcement path.
-- No implemented SuperBMAD runtime package.
+### E) Research workflow
+- Deep research command and prompt framework are present and detailed.
+- End-to-end persistence of findings into docs/memory/context graph is still process-driven, not automated.
 
 ---
 
-## 3) What is still missing (major capabilities)
+## 3) What is missing
 
-### 3.1 End-to-end autonomous orchestration
+### A) Production-grade developer gates
+- Real lint/typecheck/test toolchain setup and configuration.
+- Non-placeholder gate runner that executes configured gate sets.
+- CI workflows that enforce quick/pr/release gates on branches and PRs.
 
-Missing:
-- [ ] Controller that decomposes work, spawns subagents, and runs parallel worktrees automatically.
-- [ ] Pipeline state model (queued/running/blocked/failed/merged).
-- [ ] Failure handling (retries, rollback, escalation).
-- [ ] Dependency-aware merge order automation.
+### B) Test coverage and reliability foundation
+- Unit/integration/e2e test suites for runtime code.
+- Test fixtures and regression suites for target verticals.
 
-### 3.2 Deterministic quality gates in CI
+### C) Context graph MVP runtime
+- SQLite schema and migration files.
+- Ingestion commands (docs/ADRs/PR/test metadata).
+- Query commands for context bundle generation.
 
-Missing:
-- [ ] Real lint/typecheck/test stack and stable commands.
-- [ ] CI workflows that run quick/pr/release gate sets.
-- [ ] Security scanners integrated into CI.
-- [ ] Observability and performance budget checks as merge gates.
+### D) Orchestrator automation loop
+- Automatic worktree provisioning per slice.
+- Subagent dispatch/collection and merge-train orchestration.
+- PR automation and scorecard-attached PR summaries.
 
-### 3.3 Context graph + memory in the execution loop
+### E) Governance and observability enforcement
+- Policy-floor enforcement path (including optional arifOS runtime integration).
+- Observability budgets/smoke checks wired into gates.
 
-Missing:
-- [ ] Context graph builder/indexer.
-- [ ] Context bundle builder that agents consume per task type.
-- [ ] PsychMem integration that is scoped and policy-safe.
-- [ ] Sync rules for "docs truth, memory cache".
-
-### 3.4 Governance enforcement
-
-Missing:
-- [ ] Action-level approval classes enforced in code (A/B/C).
-- [ ] arifOS optional integration path with explicit verdict mapping.
-- [ ] Default-safe behavior when governance provider is disabled.
-
-### 3.5 Actual product vertical implementation
-
-Missing (for the Austria job heatmap product example):
-- [ ] scraper implementation + fixture-based parser tests.
-- [ ] canonical data pipeline (normalize, dedupe, store).
-- [ ] API endpoints for heatmap and seasonality.
-- [ ] frontend map/heatmap and filters.
-- [ ] notifications pipeline.
-- [ ] time-tracking feature.
+### F) Ratchet operation in practice
+- Scorecard generation in CI.
+- Historical storage/aggregation and regression blocking.
 
 ---
 
-## 4) Current maturity snapshot
+## 4) Current maturity estimate
 
-Practical maturity level (from `docs/AUTONOMY_LADDER.md`):
-- Estimated current level: between Level 1 and early Level 2.
+Overall maturity: **early scaffold / pre-MVP runtime**.
 
-Why:
-- You have strong plans, docs, and command scaffolding.
-- You do not yet have deterministic, enforced gates and full CI automation.
-- Parallel orchestration is not yet implemented as a running system.
+Approximate readiness by area:
+- Docs and process design: 4/5 (strongly specified)
+- OpenCode agent configuration: 3/5 (usable baseline)
+- CLI/worktree runtime: 2/5 (basic commands only)
+- Gates and test automation: 1/5 (mostly placeholders)
+- Context graph runtime: 1/5 (design only)
+- Governance/observability enforcement: 1/5 (design only)
 
----
-
-## 5) Highest-priority next build steps (recommended order)
-
-1. Implement real gate commands and CI for quick/pr sets.
-2. Replace placeholder `lint`/`test` scripts with real tooling and baseline tests.
-3. Implement scorecard generation in CI and fail on ratchet regressions.
-4. Build orchestrator MVP for one queued task -> one worktree -> one PR.
-5. Add parallel worktree scheduler with simple conflict rules.
-6. Implement context-graph ingestion + bundle retrieval for planner/implementer.
-7. Add optional governance adapter (arifOS) and optional memory adapter (PsychMem).
+Estimated implementation completeness (repo code + automation, excluding docs): about 20-30%.
 
 ---
 
-## 6) Bottom line
+## 5) Prioritized next steps
 
-The repository is a strong, coherent starter harness with unusually good documentation and agent-role design.
+### Priority 0 - Make quality gates real (highest leverage)
+1. Replace placeholder `lint`/`test` scripts with real tooling and add `typecheck` command.
+2. Implement `scripts/run-gates.sh` to execute `quick`, `pr`, and `release` sets against actual commands.
+3. Add CI workflow(s) to run gate sets on PRs and fail on regressions.
 
-It is not yet a fully autonomous engineering system. The biggest missing piece is execution hardening:
-- real CI gates,
-- real orchestrator runtime,
-- real context/memory/governance integration,
-- and at least one fully implemented vertical feature path to prove the workflow in production conditions.
+Success criteria:
+- `npm run lint`, `npm run build`, and `npm test` execute real checks.
+- `./scripts/run-gates.sh quick` is deterministic and CI-aligned.
+
+### Priority 1 - Build context graph MVP
+1. Add SQLite schema and a minimal data access layer under `src/context-graph/`.
+2. Implement CLI commands to ingest docs/ADRs and query related context by component/topic.
+3. Output a markdown context bundle consumable by agent prompts.
+
+Success criteria:
+- Context graph DB can be initialized and queried locally.
+- At least one real implementation flow can consume generated context bundles.
+
+### Priority 2 - Close the orchestrator loop
+1. Add CLI flows for gated worktree lifecycle + merge train execution.
+2. Add scorecard emission after gate runs (schema-compliant JSON).
+3. Add PR-ready summary generation that includes validation and risk notes.
+
+Success criteria:
+- A small feature can run from slice -> worktree -> gates -> scorecard -> PR summary with minimal manual glue.
+
+### Priority 3 - Add governance and observability as blocking checks
+1. Integrate baseline security/dependency scanning into gate sets.
+2. Add basic observability smoke checks and define budget thresholds.
+3. Wire optional arifOS policy checks for high-risk changes.
+
+Success criteria:
+- PR/release gates include at least one security and one observability blocking check.
