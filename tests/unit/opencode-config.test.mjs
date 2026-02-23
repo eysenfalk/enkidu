@@ -32,7 +32,7 @@ test("critique agents are non-mutating and non-escalating", () => {
     assert.equal(agent.tools.patch, false, `${id} patch must be disabled`);
     assert.equal(agent.tools.bash, false, `${id} bash must be disabled`);
     assert.equal(agent.tools.task, false, `${id} task must be disabled`);
-    assert.equal(agent.permission.task["*"], "deny", `${id} task escalation must be denied`);
+    assert.deepEqual(agent.permission.task, {}, `${id} task permission map must be empty`);
   }
 });
 
