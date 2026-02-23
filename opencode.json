@@ -91,6 +91,7 @@
       "git worktree list*": "allow",
       "git worktree remove*": "allow",
       "git worktree prune*": "allow",
+      "opencode debug config*": "allow",
       "git add*": "allow",
       "git commit*": "allow",
       "git switch*": "allow",
@@ -113,7 +114,11 @@
       "pytest*": "allow",
       "python -m pytest*": "allow",
       "go test*": "allow",
-      "cargo test*": "allow"
+      "cargo test*": "allow",
+      "gh *": "allow",
+      "gh pr merge --force*": "deny",
+      "gh pr merge -f*": "deny",
+      "gh repo delete*": "deny"
     },
     "webfetch": "allow"
   },
@@ -170,6 +175,7 @@
           "git worktree list*": "allow",
           "git worktree remove*": "allow",
           "git worktree prune*": "allow",
+          "opencode debug config*": "allow",
           "git add*": "allow",
           "git commit*": "allow",
           "git switch*": "allow",
@@ -182,6 +188,10 @@
           "git clean*": "allow",
           "git reset*": "allow",
           "mkdir -p .ekdu/worktrees*": "allow",
+          "gh *": "allow",
+          "gh pr merge --force*": "deny",
+          "gh pr merge -f*": "deny",
+          "gh repo delete*": "deny",
           "opencode debug config*": "allow"
         },
         "task": {
