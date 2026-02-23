@@ -97,10 +97,11 @@ Or use the provided command:
 /enkidu-deepresearch <your task>
 ```
 
-For advanced implementation planning with requirements + red-team passes:
+For advanced implementation planning with the full review stack:
 
 ```text
-/enkidu-plan-pro <your task>
+/enkidu-plan-new <your task>
+/enkidu-plan-review <packet id or planning update request>
 ```
 
 To follow the planned-work workflow-of-record:

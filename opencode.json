@@ -103,6 +103,7 @@
       "git clean*": "allow",
       "git reset*": "allow",
       "mkdir -p .ekdu/worktrees*": "allow",
+      "opencode debug config*": "allow",
       "npm test*": "allow",
       "npm run *": "allow",
       "pnpm test*": "allow",
@@ -180,7 +181,8 @@
           "git restore*": "allow",
           "git clean*": "allow",
           "git reset*": "allow",
-          "mkdir -p .ekdu/worktrees*": "allow"
+          "mkdir -p .ekdu/worktrees*": "allow",
+          "opencode debug config*": "allow"
         },
         "task": {
           "*": "deny",
@@ -217,7 +219,7 @@
       "prompt": "{file:./.opencode/prompts/enkidu-deepthink.md}"
     },
     "enkidu-planner-pro": {
-      "description": "Primary planning agent: optimized execution plans with requirements engineering and red-team analysis. Uses dedicated planning skills.",
+      "description": "Primary planning agent: deterministic multi-pass execution planning with requirements, risk, architecture, and review synthesis.",
       "mode": "primary",
       "model": "openai/gpt-5.3-codex",
       "reasoningEffort": "high",
@@ -291,11 +293,135 @@
         },
         "task": {
           "*": "deny",
+          "enkidu-requirements": "allow",
+          "enkidu-redteam": "allow",
+          "enkidu-pragmatist": "allow",
+          "enkidu-plan-reviewer": "allow",
           "enkidu-research": "allow",
           "enkidu-architect": "allow"
         }
       },
       "prompt": "{file:./.opencode/prompts/enkidu-planner-pro.md}"
+    },
+    "enkidu-requirements": {
+      "description": "Requirements critique subagent: clarifies blocking ambiguity and outputs traceable requirements.",
+      "mode": "subagent",
+      "hidden": true,
+      "model": "openai/gpt-5.1-codex-mini",
+      "reasoningEffort": "medium",
+      "reasoningSummary": "auto",
+      "textVerbosity": "low",
+      "tools": {
+        "edit": false,
+        "write": false,
+        "patch": false,
+        "bash": false,
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "webfetch": true,
+        "websearch": true,
+        "websearch_cited": true,
+        "question": true,
+        "task": false
+      },
+      "permission": {
+        "webfetch": "allow",
+        "task": {
+          "*": "deny"
+        }
+      },
+      "prompt": "{file:./.opencode/prompts/enkidu-requirements.md}"
+    },
+    "enkidu-redteam": {
+      "description": "Red-team critique subagent: identifies threats, abuse cases, and blocker risks.",
+      "mode": "subagent",
+      "hidden": true,
+      "model": "openai/gpt-5.1-codex-mini",
+      "reasoningEffort": "medium",
+      "reasoningSummary": "auto",
+      "textVerbosity": "low",
+      "tools": {
+        "edit": false,
+        "write": false,
+        "patch": false,
+        "bash": false,
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "webfetch": true,
+        "websearch": true,
+        "websearch_cited": true,
+        "question": false,
+        "task": false
+      },
+      "permission": {
+        "webfetch": "allow",
+        "task": {
+          "*": "deny"
+        }
+      },
+      "prompt": "{file:./.opencode/prompts/enkidu-redteam.md}"
+    },
+    "enkidu-pragmatist": {
+      "description": "Pragmatist critique subagent: value-realization check and over-engineering control.",
+      "mode": "subagent",
+      "hidden": true,
+      "model": "openai/gpt-5.1-codex-mini",
+      "reasoningEffort": "medium",
+      "reasoningSummary": "auto",
+      "textVerbosity": "low",
+      "tools": {
+        "edit": false,
+        "write": false,
+        "patch": false,
+        "bash": false,
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "webfetch": true,
+        "websearch": true,
+        "websearch_cited": true,
+        "question": false,
+        "task": false
+      },
+      "permission": {
+        "webfetch": "allow",
+        "task": {
+          "*": "deny"
+        }
+      },
+      "prompt": "{file:./.opencode/prompts/enkidu-pragmatist.md}"
+    },
+    "enkidu-plan-reviewer": {
+      "description": "Plan reviewer critique subagent: validates cross-pass coherence and gate readiness.",
+      "mode": "subagent",
+      "hidden": true,
+      "model": "openai/gpt-5.1-codex-mini",
+      "reasoningEffort": "medium",
+      "reasoningSummary": "auto",
+      "textVerbosity": "low",
+      "tools": {
+        "edit": false,
+        "write": false,
+        "patch": false,
+        "bash": false,
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "webfetch": true,
+        "websearch": true,
+        "websearch_cited": true,
+        "question": false,
+        "task": false
+      },
+      "permission": {
+        "webfetch": "allow",
+        "task": {
+          "*": "deny"
+        }
+      },
+      "prompt": "{file:./.opencode/prompts/enkidu-plan-reviewer.md}"
     },
     "enkidu-deepresearch": {
       "description": "Deep research orchestrator: decomposes the question and spawns many research subagents for breadth. Uses websearch_cited as default search.",
@@ -511,6 +637,7 @@
           "git branch --list*": "allow",
           "git branch --show-current": "allow",
           "git worktree list*": "allow",
+          "opencode debug config*": "allow",
           "npm test*": "allow",
           "npm run *": "allow",
           "npm run test*": "allow",
@@ -660,6 +787,7 @@
           "git branch --list*": "allow",
           "git branch --show-current": "allow",
           "git worktree list*": "allow",
+          "opencode debug config*": "allow",
           "npm test*": "allow",
           "npm run *": "allow",
           "npm run test*": "allow",

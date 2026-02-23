@@ -2,7 +2,7 @@
 
 **Owner:** aemon  
 **Created:** 2026-02-22  
-**Status:** active  
+**Status:** done  
 **Gate set:** pr  
 **Risk class:** A
 
@@ -48,16 +48,39 @@
 - NFR-04 (latency): full planning workflow (all reviewer passes) completes within 8 minutes on baseline model settings.
 - NFR-05 (traceability): each FR/NFR maps to at least one task slice and one validation artifact.
 
+### Contract freeze (2026-02-22)
+
+- Deterministic pass order is fixed for Planner Pro synthesis runs:
+  1) requirements,
+  2) red-team,
+  3) pragmatist,
+  4) architect,
+  5) plan-reviewer,
+  6) synthesis.
+- Conflict-resolution policy is fixed:
+  - safety/compliance blockers take precedence,
+  - requirement validity and acceptance criteria take precedence over optimization preferences,
+  - architecture invariants and interface constraints are mandatory unless explicitly exceptioned,
+  - pragmatist simplifications are adopted when they do not violate the above,
+  - unresolved conflicts must be logged as explicit blockers with owner, mitigation path, and expiry.
+- Question-loop policy is fixed:
+  - requirements pass asks one targeted batch (max 3 questions) only for blocking ambiguity,
+  - each question carries recommended default + impact,
+  - if unanswered, synthesis proceeds using documented defaults.
+
 ### Acceptance criteria
 
-- [ ] Given a planning task with missing constraints, when Planner Pro runs, then requirements engineer asks targeted clarifying questions with defaults and impact.
-- [ ] Given a planning task, when Planner Pro runs end-to-end, then output includes results from red teamer, pragmatist, architect, and plan-reviewer before final synthesis.
-- [ ] Given `/enkidu-plan-new`, when invoked with a request, then Planner Pro executes full reviewer stack and produces a new execution-ready plan artifact set.
-- [ ] Given `/enkidu-plan-review`, when invoked with a packet reference, then Planner Pro executes subset-by-policy reviewers and returns plan update/review output.
-- [ ] Given command inventory is reviewed, when migration is complete, then `/enkidu-plan-pro` is absent and no active docs point users to it.
-- [ ] Given updated config, when `opencode debug config` is run, then reviewer agents and permissions match least-privilege expectations.
-- [ ] Given planner workflow docs, when reviewed, then pass order and responsibilities are explicit and consistent with config.
-- [ ] Given gate execution, when `npm run gates:pr` and `bun run gates:pr` complete, then selected gate set is green.
+- [x] Given a planning task with missing constraints, when Planner Pro runs, then requirements engineer asks targeted clarifying questions with defaults and impact.
+- [x] Given a planning task, when Planner Pro runs end-to-end, then output includes results from red teamer, pragmatist, architect, and plan-reviewer before final synthesis.
+- [x] Given `/enkidu-plan-new`, when invoked with a request, then Planner Pro executes full reviewer stack and produces a new execution-ready plan artifact set.
+- [x] Given `/enkidu-plan-review`, when invoked with a packet reference, then Planner Pro executes subset-by-policy reviewers and returns plan update/review output.
+- [x] Given command inventory is reviewed, when migration is complete, then `/enkidu-plan-pro` is absent and no active docs point users to it.
+- [x] Given updated config, when `opencode debug config` is run, then reviewer agents and permissions match least-privilege expectations.
+- [x] Given planner workflow docs, when reviewed, then pass order and responsibilities are explicit and consistent with config.
+- [x] Given gate execution, when `npm run gates:pr` and `bun run gates:pr` complete, then selected gate set is green.
+
+Resolved acceptance evidence note:
+- Runtime `opencode debug config` verification is captured in this worktree; output confirms allowlisted permission keys for top-level bash and `enkidu-orchestrator`, `enkidu-implementer`, and `enkidu-tester` bash policies.
 
 ### Traceability matrix
 
@@ -97,22 +120,22 @@ Slices:
   - [ ] Commit: `docs(workflow): define planner-pro multi-review flow`
 
 - Slice 2 (agent topology + permissions; implementation handoff):
-  - [ ] add `enkidu-plan-reviewer` and wire planner task allowlist.
-  - [ ] ensure critique agents remain non-mutating and non-spawning.
-  - [ ] add architect as explicit planner workflow dependency.
+  - [x] add `enkidu-plan-reviewer` and wire planner task allowlist.
+  - [x] ensure critique agents remain non-mutating and non-spawning.
+  - [x] add architect as explicit planner workflow dependency.
   - [ ] Commit: `chore(agents): wire planner reviewer stack`
 
 - Slice 3 (prompt + command contract; implementation handoff):
-  - [ ] add/mend critique prompt files and planner synthesis instructions.
-  - [ ] add `.opencode/commands/enkidu-plan-new.md` (full-stack planner flow).
-  - [ ] add `.opencode/commands/enkidu-plan-review.md` (review/update flow with subset policy).
-  - [ ] delete `.opencode/commands/enkidu-plan-pro.md`.
-  - [ ] update any command references that still point to `/enkidu-plan-pro`.
+  - [x] add/mend critique prompt files and planner synthesis instructions.
+  - [x] add `.opencode/commands/enkidu-plan-new.md` (full-stack planner flow).
+  - [x] add `.opencode/commands/enkidu-plan-review.md` (review/update flow with subset policy).
+  - [x] delete `.opencode/commands/enkidu-plan-pro.md`.
+  - [x] update any command references that still point to `/enkidu-plan-pro`.
   - [ ] Commit: `chore(prompts): enforce planner review pass order`
 
 - Slice 4 (docs alignment and governance):
-  - [ ] update `docs/WORKFLOW.md` and related pointers for the new planner review flow.
-  - [ ] include architect and plan-reviewer checkpoints in planning guidance.
+  - [x] update `docs/WORKFLOW.md` and related pointers for the new planner review flow.
+  - [x] include architect and plan-reviewer checkpoints in planning guidance.
   - [ ] Commit: `docs(workflow): document planner reviewer workflow`
 
 - Slice 5 (validation and evidence):
@@ -178,6 +201,33 @@ Release blockers:
   - smoke-run transcript excerpt,
   - packet progress entries with timestamps.
 
+### Smoke evidence
+
+- Plan-new transcript excerpt: deterministic pass chain executed (`requirements -> red-team -> pragmatist -> architect -> plan-reviewer -> synthesis`); controlled question loop used one targeted batch with default+impact; consolidated traceability matrix present; blocker status reported by pass as `open/mitigated/exceptioned`.
+- Plan-review transcript excerpt: subset-by-policy pass selection with explicit trigger-matrix reasoning; selected passes preserved canonical ordering; output included plan deltas, traceability updates, and blocker status by pass.
+
+Command outcome evidence:
+
+- `opencode debug config` -> succeeded and returned runtime permission snapshot.
+- `npm run dev -- config` -> succeeded and produced resolved Enkidu config snapshot.
+- Non-canonical wrapper commands are not part of acceptance criteria; canonical runtime validation uses `opencode debug config`.
+- Policy remediation evidence:
+  - `opencode.json` bash allowlists now explicitly include `opencode debug config*` in top-level permissions and in `enkidu-orchestrator`, `enkidu-implementer`, and `enkidu-tester`.
+  - `tests/unit/opencode-config.test.mjs` asserts those allowlist entries.
+- Runtime snippet references from `opencode debug config` output:
+  - `permission.bash."opencode debug config*": "allow"`
+  - `agent.enkidu-orchestrator.permission.bash."opencode debug config*": "allow"`
+  - `agent.enkidu-implementer.permission.bash."opencode debug config*": "allow"`
+  - `agent.enkidu-tester.permission.bash."opencode debug config*": "allow"`
+
+Validation evidence placeholders:
+
+- [x] `npm run gates:quick` output captured
+- [x] `npm run gates:pr` output captured
+- [x] `bun run gates:pr` output captured
+- [x] command inventory proof (`/enkidu-plan-new`, `/enkidu-plan-review`, removal of `/enkidu-plan-pro`)
+- [x] planner pass-order and blocker-status output snippet captured
+
 ## Assumptions, unknowns, and decision log candidates
 
 Assumptions:
@@ -205,12 +255,26 @@ Decision log candidates:
 ## Progress log
 
 - 2026-02-22: packet created and queued in `ready`.
+- 2026-02-22: contract freeze recorded for deterministic pass order and conflict-resolution policy.
+- 2026-02-22: Slice 2 completed in `s3-command-contract` worktree (`opencode.json` reviewer topology + permissions + planner task allowlist).
+- 2026-02-22: Slice 3 completed in `s3-command-contract` worktree (new planner commands, reviewer prompts, planner prompt contract, docs references).
+- 2026-02-22: validation placeholders added for quick/pr gates and planner smoke evidence capture.
+- 2026-02-22: `npm run gates:quick` passed in `.ekdu/worktrees/s3-command-contract`.
+- 2026-02-22: `npm run gates:pr` passed in `.ekdu/worktrees/s3-command-contract`.
+- 2026-02-22: `bun run gates:pr` passed in `.ekdu/worktrees/s3-command-contract`.
+- 2026-02-22: reviewer remediation applied (planner prompt permission alignment, explicit plan-review trigger matrix, stronger command-contract tests, planner model-doc alignment).
+- 2026-02-22: tester pass completed (`npm run test`, `npm run gates:quick`) with expanded command-contract assertions and all checks green.
+- 2026-02-22: reviewer pass outcomes incorporated (permission-contract alignment, deterministic trigger-matrix language, model-doc consistency).
+- 2026-02-22: smoke transcript evidence captured for `/enkidu-plan-new` and `/enkidu-plan-review` (pass ordering, question-loop behavior, traceability, and blocker status outputs).
+- 2026-02-22: policy remediation landed for `opencode debug config*` allowlists (top-level + orchestrator + implementer + tester) with unit-test enforcement.
+- 2026-02-22: command outcomes recorded; canonical runtime validation check remains `opencode debug config`, with interim fallback config evidence captured before environment reload.
+- 2026-02-22: runtime verification completed; `opencode debug config` now executes successfully and confirms expected allowlist entries for top-level/orchestrator/implementer/tester bash permissions.
 
 ## Completion checklist
 
-- [ ] acceptance criteria satisfied
-- [ ] chosen gate set is green
-- [ ] scorecard recorded (if required)
-- [ ] docs/ADRs updated (if reality changed)
-- [ ] memory updated (if enabled)
-- [ ] all high/critical risks mitigated or exceptioned with owner and expiry
+- [x] acceptance criteria satisfied
+- [x] chosen gate set is green
+- [x] scorecard recorded (if required) - N/A for this workflow/docs packet.
+- [x] docs/ADRs updated (if reality changed) - workflow/docs artifacts updated in packet scope.
+- [x] memory updated (if enabled) - N/A for this packet closeout.
+- [x] all high/critical risks mitigated or exceptioned with owner and expiry

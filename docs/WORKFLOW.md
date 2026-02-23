@@ -101,7 +101,8 @@ Use the planning agent (or `enkidu-deepthink`) to:
 - identify context requirements (which docs, which files, which data)
 
 In OpenCode:
-- run `/enkidu-plan-pro` for requirements + optimized DAG + red-team pass
+- run `/enkidu-plan-new` for full Planner Pro workflow (requirements -> red-team -> pragmatist -> architect -> plan-reviewer -> synthesis)
+- run `/enkidu-plan-review` to review/update an existing packet plan with subset-by-policy reviewer passes
 - or run `/enkidu-plan` for a lighter planning pass
 
 Note: Planner Pro may edit plan/workflow artifacts, but must not edit application code.
