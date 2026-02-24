@@ -24,7 +24,6 @@
   },
   "permission": {
     "edit": {
-      "*": "deny",
       "src/**": "allow",
       "test/**": "allow",
       "tests/**": "allow",
@@ -46,7 +45,6 @@
       ".ekdu/worktrees/**": "allow"
     },
     "write": {
-      "*": "deny",
       "src/**": "allow",
       "test/**": "allow",
       "tests/**": "allow",
@@ -61,7 +59,6 @@
       ".ekdu/worktrees/**": "allow"
     },
     "patch": {
-      "*": "deny",
       "src/**": "allow",
       "test/**": "allow",
       "tests/**": "allow",
@@ -76,7 +73,6 @@
       ".ekdu/worktrees/**": "allow"
     },
     "bash": {
-      "*": "deny",
       "git status*": "allow",
       "git diff*": "allow",
       "git log*": "allow",
@@ -96,13 +92,19 @@
       "git commit*": "allow",
       "git switch*": "allow",
       "git checkout*": "allow",
-      "git merge*": "allow",
+      "git merge*": "deny",
       "git fetch*": "allow",
       "git pull*": "allow",
       "git push*": "allow",
+      "git push --force*": "deny",
+      "git push -f*": "deny",
+      "git push * main*": "deny",
+      "git push * dev*": "deny",
+      "git rebase*": "deny",
       "git restore*": "allow",
       "git clean*": "allow",
       "git reset*": "allow",
+      "git reset --hard*": "deny",
       "mkdir -p .ekdu/worktrees*": "allow",
       "opencode debug config*": "allow",
       "npm test*": "allow",
@@ -116,9 +118,13 @@
       "go test*": "allow",
       "cargo test*": "allow",
       "gh *": "allow",
-      "gh pr merge --force*": "deny",
-      "gh pr merge -f*": "deny",
-      "gh repo delete*": "deny"
+      "gh repo delete*": "deny",
+      "gh pr merge --admin*": "deny",
+      "gh pr merge * --admin*": "deny",
+      "gh repo sync --force*": "deny",
+      "gh repo sync -f*": "deny",
+      "gh repo sync * --force*": "deny",
+      "gh repo sync * -f*": "deny"
     },
     "webfetch": "allow"
   },
@@ -156,11 +162,7 @@
         "skill": false
       },
       "permission": {
-        "edit": "deny",
-        "write": "deny",
-        "patch": "deny",
         "bash": {
-          "*": "deny",
           "git status*": "allow",
           "git diff*": "allow",
           "git log*": "allow",
@@ -180,22 +182,31 @@
           "git commit*": "allow",
           "git switch*": "allow",
           "git checkout*": "allow",
-          "git merge*": "allow",
+          "git merge*": "deny",
           "git fetch*": "allow",
           "git pull*": "allow",
           "git push*": "allow",
+          "git push --force*": "deny",
+          "git push -f*": "deny",
+          "git push * main*": "deny",
+          "git push * dev*": "deny",
+          "git rebase*": "deny",
           "git restore*": "allow",
           "git clean*": "allow",
           "git reset*": "allow",
+          "git reset --hard*": "deny",
           "mkdir -p .ekdu/worktrees*": "allow",
           "gh *": "allow",
-          "gh pr merge --force*": "deny",
-          "gh pr merge -f*": "deny",
           "gh repo delete*": "deny",
+          "gh pr merge --admin*": "deny",
+          "gh pr merge * --admin*": "deny",
+          "gh repo sync --force*": "deny",
+          "gh repo sync -f*": "deny",
+          "gh repo sync * --force*": "deny",
+          "gh repo sync * -f*": "deny",
           "opencode debug config*": "allow"
         },
         "task": {
-          "*": "deny",
           "enkidu-*": "allow"
         }
       },
@@ -222,9 +233,7 @@
       },
       "permission": {
         "webfetch": "allow",
-        "task": {
-          "*": "deny"
-        }
+        "task": {}
       },
       "prompt": "{file:./.opencode/prompts/enkidu-deepthink.md}"
     },
@@ -257,7 +266,6 @@
       "permission": {
         "webfetch": "allow",
         "edit": {
-          "*": "deny",
           "docs/work/**": "allow",
           "docs/WORKFLOW.md": "allow",
           "docs/GATES.md": "allow",
@@ -272,7 +280,6 @@
           ".ekdu/worktrees/**/docs/templates/**": "allow"
         },
         "write": {
-          "*": "deny",
           "docs/work/**": "allow",
           "docs/WORKFLOW.md": "allow",
           "docs/GATES.md": "allow",
@@ -287,7 +294,6 @@
           ".ekdu/worktrees/**/docs/templates/**": "allow"
         },
         "patch": {
-          "*": "deny",
           "docs/work/**": "allow",
           "docs/WORKFLOW.md": "allow",
           "docs/GATES.md": "allow",
@@ -302,7 +308,6 @@
           ".ekdu/worktrees/**/docs/templates/**": "allow"
         },
         "task": {
-          "*": "deny",
           "enkidu-requirements": "allow",
           "enkidu-redteam": "allow",
           "enkidu-pragmatist": "allow",
@@ -337,9 +342,7 @@
       },
       "permission": {
         "webfetch": "allow",
-        "task": {
-          "*": "deny"
-        }
+        "task": {}
       },
       "prompt": "{file:./.opencode/prompts/enkidu-requirements.md}"
     },
@@ -367,9 +370,7 @@
       },
       "permission": {
         "webfetch": "allow",
-        "task": {
-          "*": "deny"
-        }
+        "task": {}
       },
       "prompt": "{file:./.opencode/prompts/enkidu-redteam.md}"
     },
@@ -397,9 +398,7 @@
       },
       "permission": {
         "webfetch": "allow",
-        "task": {
-          "*": "deny"
-        }
+        "task": {}
       },
       "prompt": "{file:./.opencode/prompts/enkidu-pragmatist.md}"
     },
@@ -427,9 +426,7 @@
       },
       "permission": {
         "webfetch": "allow",
-        "task": {
-          "*": "deny"
-        }
+        "task": {}
       },
       "prompt": "{file:./.opencode/prompts/enkidu-plan-reviewer.md}"
     },
@@ -456,7 +453,6 @@
       "permission": {
         "webfetch": "allow",
         "task": {
-          "*": "deny",
           "enkidu-research": "allow"
         }
       },
@@ -482,9 +478,7 @@
       },
       "permission": {
         "webfetch": "allow",
-        "task": {
-          "*": "deny"
-        }
+        "task": {}
       },
       "prompt": "{file:./.opencode/prompts/enkidu-research.md}"
     },
@@ -507,24 +501,19 @@
       },
       "permission": {
         "edit": {
-          "*": "deny",
           "docs/adr/**": "allow",
           ".ekdu/worktrees/**/docs/adr/**": "allow"
         },
         "write": {
-          "*": "deny",
           "docs/adr/**": "allow",
           ".ekdu/worktrees/**/docs/adr/**": "allow"
         },
         "patch": {
-          "*": "deny",
           "docs/adr/**": "allow",
           ".ekdu/worktrees/**/docs/adr/**": "allow"
         },
         "webfetch": "allow",
-        "task": {
-          "*": "deny"
-        }
+        "task": {}
       },
       "prompt": "{file:./.opencode/prompts/enkidu-architect.md}"
     },
@@ -545,7 +534,6 @@
       },
       "permission": {
         "edit": {
-          "*": "deny",
           "src/**": "allow",
           "test/**": "allow",
           "tests/**": "allow",
@@ -576,7 +564,6 @@
           ".ekdu/worktrees/**/.opencode/**": "allow"
         },
         "write": {
-          "*": "deny",
           "src/**": "allow",
           "test/**": "allow",
           "tests/**": "allow",
@@ -607,7 +594,6 @@
           ".ekdu/worktrees/**/.opencode/**": "allow"
         },
         "patch": {
-          "*": "deny",
           "src/**": "allow",
           "test/**": "allow",
           "tests/**": "allow",
@@ -638,7 +624,6 @@
           ".ekdu/worktrees/**/.opencode/**": "allow"
         },
         "bash": {
-          "*": "deny",
           "git status*": "allow",
           "git diff*": "allow",
           "git log*": "allow",
@@ -672,9 +657,7 @@
           "cargo test*": "allow"
         },
         "webfetch": "allow",
-        "task": {
-          "*": "deny"
-        }
+        "task": {}
       },
       "prompt": "{file:./.opencode/prompts/enkidu-implementer.md}"
     },
@@ -695,7 +678,6 @@
       },
       "permission": {
         "edit": {
-          "*": "deny",
           "src/**": "allow",
           "test/**": "allow",
           "tests/**": "allow",
@@ -719,14 +701,9 @@
           ".ekdu/worktrees/**/tsconfig.json": "allow",
           ".ekdu/worktrees/**/bun.lock": "allow",
           ".ekdu/worktrees/**/bun.lockb": "allow",
-          ".ekdu/worktrees/**/pnpm-lock.yaml": "allow",
-          "opencode.json": "deny",
-          ".opencode/**": "deny",
-          ".ekdu/worktrees/**/opencode.json": "deny",
-          ".ekdu/worktrees/**/.opencode/**": "deny"
+          ".ekdu/worktrees/**/pnpm-lock.yaml": "allow"
         },
         "write": {
-          "*": "deny",
           "src/**": "allow",
           "test/**": "allow",
           "tests/**": "allow",
@@ -750,14 +727,9 @@
           ".ekdu/worktrees/**/tsconfig.json": "allow",
           ".ekdu/worktrees/**/bun.lock": "allow",
           ".ekdu/worktrees/**/bun.lockb": "allow",
-          ".ekdu/worktrees/**/pnpm-lock.yaml": "allow",
-          "opencode.json": "deny",
-          ".opencode/**": "deny",
-          ".ekdu/worktrees/**/opencode.json": "deny",
-          ".ekdu/worktrees/**/.opencode/**": "deny"
+          ".ekdu/worktrees/**/pnpm-lock.yaml": "allow"
         },
         "patch": {
-          "*": "deny",
           "src/**": "allow",
           "test/**": "allow",
           "tests/**": "allow",
@@ -781,14 +753,9 @@
           ".ekdu/worktrees/**/tsconfig.json": "allow",
           ".ekdu/worktrees/**/bun.lock": "allow",
           ".ekdu/worktrees/**/bun.lockb": "allow",
-          ".ekdu/worktrees/**/pnpm-lock.yaml": "allow",
-          "opencode.json": "deny",
-          ".opencode/**": "deny",
-          ".ekdu/worktrees/**/opencode.json": "deny",
-          ".ekdu/worktrees/**/.opencode/**": "deny"
+          ".ekdu/worktrees/**/pnpm-lock.yaml": "allow"
         },
         "bash": {
-          "*": "deny",
           "git status*": "allow",
           "git diff*": "allow",
           "git log*": "allow",
@@ -822,9 +789,7 @@
           "cargo test*": "allow"
         },
         "webfetch": "allow",
-        "task": {
-          "*": "deny"
-        }
+        "task": {}
       },
       "prompt": "{file:./.opencode/prompts/enkidu-tester.md}"
     },
@@ -850,9 +815,7 @@
       },
       "permission": {
         "webfetch": "allow",
-        "task": {
-          "*": "deny"
-        }
+        "task": {}
       },
       "prompt": "{file:./.opencode/prompts/enkidu-reviewer.md}"
     }

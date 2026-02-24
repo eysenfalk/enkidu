@@ -117,7 +117,14 @@ The output should be:
 - any *constraints* to store in docs/memory
 
 ### Step 4 — implement in a branch/worktree
-Implementation/testing must run in a dedicated execution worktree:
+Implementation/testing must run in a dedicated execution worktree.
+
+Default execution model (required):
+- one packet branch maps to one active execution worktree
+- one agent/session writes serially on that packet branch worktree
+- parallelism happens across packet branches (each with its own worktree)
+
+Branch/worktree contract:
 
 - branch: `ekdu/<packet-id>-<slice-slug>`
 - worktree dir: `.ekdu/worktrees/<slice-slug>`
@@ -132,6 +139,11 @@ Naming guidance:
 Legacy-transition exception:
 - Existing legacy branches/worktrees that predate packet-scoped naming may complete in place.
 - Any new slice created after workflow-of-record adoption must use packet-scoped naming.
+
+Extra slice-worktree exception (opt-in only):
+- Additional slice worktrees for the same packet are allowed only when preplanned in `docs/work/<id>-<slug>/plan.md` before creation.
+- The preplan entry must include: explicit justification, expected parallelism benefit, merge-back order, and cleanup owner.
+- Without that preplan record, create no extra worktrees for the packet.
 
 Let the implementation agent do the coding and tests.
 
@@ -171,6 +183,24 @@ Merge only when:
 - chosen gate set is green
 - a scorecard exists (or was updated)
 - the packet plan completion checklist is complete
+
+Human confirmation checkpoint (required):
+- Before merge and before any cleanup command, record explicit human confirmation in packet artifacts (`plan.md` progress or completion notes).
+- If confirmation is missing, merge and cleanup are blocked.
+
+Deterministic cleanup runbook order:
+1) backup/evidence capture
+   - save final validation evidence (gate outputs, `git status --short`, `git worktree list`, branch list) in packet artifacts
+2) merge
+   - merge approved packet branch according to the selected workflow (single PR or merge train)
+3) verify post-merge state
+   - confirm target branch is healthy and packet acceptance checklist remains satisfied
+4) remove worktrees/branches
+   - remove all extra slice worktrees in reverse merge order
+   - remove default packet worktree last
+   - remove all extra slice branches in reverse merge order
+   - remove default packet branch last
+   - record final repo state evidence
 
 Self-modification policy:
 - Enkidu may modify its own prompts/docs/scripts when required to improve reliability.
