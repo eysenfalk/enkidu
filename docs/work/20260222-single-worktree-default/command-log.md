@@ -37,6 +37,9 @@ Note: shell policy in this packet worktree allows only command allowlist pattern
 | 2026-02-24 #29 | `git rev-parse --show-toplevel && git branch --show-current` | pass | Confirmed packet worktree root and required branch before edits. |
 | 2026-02-24 #30 | `npm run test` | pass | 13 passed, 0 failed. |
 | 2026-02-24 #31 | `git diff -- opencode.json .ekdu/worktrees/s1-single-worktree-default/opencode.json` | pass | Diff shows explicit deny added for `gh repo delete*` in top-level and orchestrator bash permission maps. |
+| 2026-02-24 #32 | `git add opencode.json docs/work/20260222-single-worktree-default/command-log.md && git commit -m "fix(opencode): deny gh repo delete commands"` | pass | Created commit `d3231cf` with policy update and command log evidence up to pre-commit validation. |
+| 2026-02-24 #33 | `git status --short` | pass | Working tree shows modified `docs/work/20260222-single-worktree-default/command-log.md` from post-commit logging. |
+| 2026-02-24 #34 | `git push -u origin ekdu/20260222-single-worktree-default-s1-single-worktree-default` | pass | Branch pushed to origin; upstream tracking configured. |
 
 ## Dangerous command register
 
