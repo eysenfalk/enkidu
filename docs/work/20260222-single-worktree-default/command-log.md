@@ -34,6 +34,9 @@ Note: shell policy in this packet worktree allows only command allowlist pattern
 | 2026-02-23 #26 | `git status --short` | pass | Verified remaining modified files after commit A exclude `opencode.json`. |
 | 2026-02-23 #27 | `git add tests/unit/opencode-config.test.mjs && git commit -m "test(opencode): align task permission assertions" && git status --short` | pass | Created commit `ac3d051`; post-commit status showed only orchestrator/docs/packet files pending. |
 | 2026-02-23 #28 | `git add .opencode/commands/enkidu-work.md .opencode/prompts/enkidu-orchestrator.md docs/WORKFLOW.md docs/templates/work-pointer.md docs/work/20260222-single-worktree-default/plan.md docs/work/20260222-single-worktree-default/command-log.md && git commit -m "docs(workflow): close out single-worktree packet" && git status --short` | pass | Created docs/evidence closeout commit and confirmed clean working tree in packet worktree. |
+| 2026-02-24 #29 | `git rev-parse --show-toplevel && git branch --show-current` | pass | Confirmed packet worktree root and required branch before edits. |
+| 2026-02-24 #30 | `npm run test` | pass | 13 passed, 0 failed. |
+| 2026-02-24 #31 | `git diff -- opencode.json .ekdu/worktrees/s1-single-worktree-default/opencode.json` | pass | Diff shows explicit deny added for `gh repo delete*` in top-level and orchestrator bash permission maps. |
 
 ## Dangerous command register
 
